@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>VELO Archive</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
@@ -10,24 +11,31 @@
 <style>
 :root {
     --bg: #050505;
-    --panel: rgba(15, 15, 15, 0.86);
+    --panel: rgba(14, 14, 14, 0.96);
+    --panel-2: rgba(22, 22, 22, 0.92);
     --line: rgba(255, 255, 255, 0.08);
-    --text: #f1f1f1;
-    --muted: #a8a8a8;
+    --text: #f2f2f2;
+    --muted: #aaaaaa;
     --accent: #d4af37;
     --accent-soft: rgba(212, 175, 55, 0.16);
-    --shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
     --radius: 28px;
     --sidebar-width: 320px;
+    --top-space: max(16px, env(safe-area-inset-top));
+    --bottom-space: max(16px, env(safe-area-inset-bottom));
+    --left-space: max(16px, env(safe-area-inset-left));
+    --right-space: max(16px, env(safe-area-inset-right));
 }
 
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: 'Montserrat', sans-serif;
@@ -39,8 +47,8 @@ body::before {
     position: fixed;
     inset: -20%;
     background:
-        radial-gradient(circle at var(--x, 20%) var(--y, 20%), rgba(212, 175, 55, 0.12), transparent 18%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04), transparent 20%),
+        radial-gradient(circle at var(--x, 20%) var(--y, 20%), rgba(212,175,55,0.13), transparent 18%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03), transparent 20%),
         linear-gradient(135deg, #000 0%, #060606 45%, #0b0b0b 100%);
     z-index: -3;
     transition: 0.25s ease;
@@ -51,10 +59,16 @@ body::after {
     position: fixed;
     inset: 0;
     background:
-        linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 28%, rgba(0,0,0,0) 55%),
-        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+        linear-gradient(to right, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.46) 30%, rgba(0,0,0,0) 60%),
+        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.24) 100%);
     z-index: -2;
     pointer-events: none;
+}
+
+button,
+select,
+a {
+    font: inherit;
 }
 
 .shell {
@@ -66,81 +80,100 @@ body::after {
 
 .topbar {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 60;
+    top: var(--top-space);
+    right: var(--right-space);
+    z-index: 90;
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px 14px;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: rgba(10, 10, 10, 0.75);
+    background: rgba(10, 10, 10, 0.82);
     backdrop-filter: blur(18px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.26);
+    max-width: calc(100vw - 32px);
 }
 
 .topbar label {
     font-size: 12px;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
-    font-weight: 700;
+    white-space: nowrap;
 }
 
 .topbar select {
-    background: transparent;
-    color: white;
     border: none;
     outline: none;
-    font-family: inherit;
-    font-weight: 700;
+    background: transparent;
+    color: white;
     font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
+    min-width: 96px;
 }
 
 .topbar option {
-    color: black;
+    color: #111;
 }
 
 .menu-toggle {
     position: fixed;
-    top: 24px;
-    left: 24px;
-    z-index: 50;
+    top: var(--top-space);
+    left: var(--left-space);
+    z-index: 90;
     border: 1px solid var(--line);
-    background: rgba(10, 10, 10, 0.75);
+    background: rgba(10, 10, 10, 0.82);
     color: var(--text);
     backdrop-filter: blur(18px);
     border-radius: 999px;
     padding: 14px 18px;
+    min-height: 48px;
     font-weight: 700;
     letter-spacing: 0.08em;
     cursor: pointer;
-    transition: 0.35s ease;
+    transition: 0.3s ease;
 }
 
 .menu-toggle:hover {
     transform: translateY(-2px);
-    border-color: rgba(212, 175, 55, 0.5);
-    box-shadow: 0 10px 35px rgba(212, 175, 55, 0.12);
+    border-color: rgba(212, 175, 55, 0.45);
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.42);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.35s ease;
+    z-index: 55;
+}
+
+.overlay.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: var(--sidebar-width);
+    width: min(var(--sidebar-width), 88vw);
     height: 100vh;
-    padding: 84px 22px 22px;
-    background: linear-gradient(180deg, rgba(20,20,20,0.9), rgba(8,8,8,0.96));
+    padding: calc(var(--top-space) + 64px) 18px var(--bottom-space);
+    background: linear-gradient(180deg, rgba(18,18,18,0.97), rgba(8,8,8,0.99));
     backdrop-filter: blur(24px);
     border-right: 1px solid rgba(255,255,255,0.06);
     transform: translateX(-100%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.55s cubic-bezier(.22,1,.36,1), opacity 0.4s ease;
-    z-index: 40;
+    transition: transform 0.45s cubic-bezier(.22,1,.36,1), opacity 0.3s ease;
+    z-index: 70;
+    overflow-y: auto;
 }
 
 .sidebar.open {
@@ -152,23 +185,22 @@ body::after {
 .sidebar-header {
     padding: 0 8px 18px;
     border-bottom: 1px solid var(--line);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .sidebar-header span {
     display: block;
     color: var(--accent);
     font-size: 12px;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     margin-bottom: 10px;
 }
 
 .sidebar-header h2 {
     margin: 0;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 900;
-    letter-spacing: 0.08em;
 }
 
 .nav {
@@ -180,24 +212,24 @@ body::after {
 .nav button {
     width: 100%;
     text-align: left;
-    padding: 18px 18px;
+    padding: 16px;
+    min-height: 52px;
+    border-radius: 18px;
     border: 1px solid transparent;
-    border-radius: 20px;
     background: transparent;
     color: var(--muted);
-    font-family: inherit;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.35s ease;
+    transition: 0.3s ease;
 }
 
 .nav button:hover,
 .nav button.active {
     color: white;
     background: linear-gradient(90deg, var(--accent-soft), rgba(255,255,255,0.02));
-    border-color: rgba(212, 175, 55, 0.28);
-    transform: translateX(6px);
+    border-color: rgba(212,175,55,0.24);
+    transform: translateX(4px);
 }
 
 .home {
@@ -205,13 +237,13 @@ body::after {
     inset: 0;
     display: grid;
     place-items: center;
-    padding: 40px 24px;
-    transition: transform 0.7s cubic-bezier(.22,1,.36,1), opacity 0.5s ease, filter 0.5s ease;
+    padding: clamp(104px, 14vh, 140px) 20px calc(var(--bottom-space) + 18px);
+    transition: transform 0.65s cubic-bezier(.22,1,.36,1), opacity 0.45s ease, filter 0.45s ease;
 }
 
 .home.inner-hidden {
-    transform: translateX(-120px) scale(0.96);
-    opacity: 0.2;
+    transform: translateX(-90px) scale(0.97);
+    opacity: 0.18;
     filter: blur(18px);
     pointer-events: none;
 }
@@ -222,75 +254,79 @@ body::after {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 24px;
+    gap: 20px;
 }
 
 .hero-badge {
-    padding: 10px 18px;
-    border: 1px solid rgba(212, 175, 55, 0.28);
+    padding: 10px 16px;
     border-radius: 999px;
-    background: rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212,175,55,0.28);
+    background: rgba(212,175,55,0.08);
     color: var(--accent);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    line-height: 1.5;
 }
 
 .video-frame {
-    width: min(360px, 86vw);
-    border-radius: 34px;
+    width: min(380px, 90vw);
+    border-radius: 30px;
     padding: 10px;
     background: linear-gradient(145deg, rgba(212,175,55,0.28), rgba(255,255,255,0.05));
-    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    box-shadow: 0 28px 80px rgba(0,0,0,0.45);
 }
 
 .video-frame video {
     width: 100%;
     display: block;
-    border-radius: 26px;
+    border-radius: 22px;
     background: #111;
-}
-
-.hero p {
-    max-width: 720px;
-    margin: 0;
-    color: #d3d3d3;
-    font-size: 18px;
-    line-height: 1.8;
 }
 
 .quote {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4vw, 42px);
-    color: rgba(255,255,255,0.86);
+    font-size: clamp(28px, 4vw, 44px);
+    color: rgba(255,255,255,0.88);
     font-style: italic;
+    line-height: 1.1;
+}
+
+.hero p {
+    margin: 0;
+    max-width: 720px;
+    color: #d2d2d2;
+    font-size: clamp(15px, 2vw, 18px);
+    line-height: 1.85;
 }
 
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
 }
 
 .hero-actions a,
 .hero-actions button {
+    min-height: 50px;
+    padding: 14px 22px;
+    border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(255,255,255,0.03);
     color: white;
     text-decoration: none;
-    padding: 14px 22px;
-    border-radius: 999px;
-    font-family: inherit;
-    font-weight: 700;
     font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: 0.35s ease;
+    transition: 0.3s ease;
 }
 
-.hero-actions a.primary,
-.hero-actions button.primary {
+.hero-actions a.primary {
     background: linear-gradient(135deg, #e1bb46, #b7921f);
     color: #111;
     border-color: transparent;
@@ -299,15 +335,11 @@ body::after {
 .hero-actions a:hover,
 .hero-actions button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.28);
 }
 
 .content-stage {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+    inset: 0;
     pointer-events: none;
 }
 
@@ -327,176 +359,249 @@ body::after {
 .panel {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(26,26,26,0.95), rgba(12,12,12,0.98));
+    padding: 30px;
+    background: linear-gradient(180deg, rgba(24,24,24,0.96), rgba(10,10,10,0.99));
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 34px;
+    border-radius: 30px;
     box-shadow: var(--shadow);
-    padding: 34px;
-    overflow: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     opacity: 0;
-    transform: translateX(80px) scale(0.96) rotateY(-12deg);
+    transform: translateX(80px) scale(0.96) rotateY(-10deg);
     filter: blur(8px);
+    clip-path: inset(0 0 0 100% round 30px);
     transition:
-        transform 0.7s cubic-bezier(.22,1,.36,1),
-        opacity 0.45s ease,
-        filter 0.45s ease,
-        clip-path 0.7s cubic-bezier(.22,1,.36,1);
-    clip-path: inset(0 0 0 100% round 34px);
+        transform 0.65s cubic-bezier(.22,1,.36,1),
+        opacity 0.42s ease,
+        filter 0.42s ease,
+        clip-path 0.65s cubic-bezier(.22,1,.36,1);
 }
 
 .panel.active {
     opacity: 1;
     transform: translateX(0) scale(1) rotateY(0deg);
     filter: blur(0);
-    clip-path: inset(0 0 0 0 round 34px);
+    clip-path: inset(0 0 0 0 round 30px);
     z-index: 3;
 }
 
 .panel.leaving-left {
     opacity: 0;
-    transform: translateX(-120px) scale(0.94) rotateY(10deg);
+    transform: translateX(-90px) scale(0.95) rotateY(8deg);
     filter: blur(10px);
-    clip-path: inset(0 100% 0 0 round 34px);
+    clip-path: inset(0 100% 0 0 round 30px);
     z-index: 1;
 }
 
 .panel.leaving-right {
     opacity: 0;
-    transform: translateX(120px) scale(0.94) rotateY(-10deg);
+    transform: translateX(90px) scale(0.95) rotateY(-8deg);
     filter: blur(10px);
-    clip-path: inset(0 0 0 100% round 34px);
+    clip-path: inset(0 0 0 100% round 30px);
     z-index: 1;
 }
 
 .panel-top {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
     align-items: flex-start;
-    margin-bottom: 26px;
+    gap: 18px;
+    margin-bottom: 24px;
 }
 
 .panel-kicker {
     color: var(--accent);
     text-transform: uppercase;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.18em;
     font-size: 12px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .panel h2 {
     margin: 0;
     font-size: clamp(28px, 4vw, 48px);
     font-weight: 900;
+    line-height: 1.05;
 }
 
 .panel p {
-    color: #d2d2d2;
+    margin: 0;
+    color: #d4d4d4;
     line-height: 1.9;
-    font-size: 17px;
+    font-size: clamp(15px, 2vw, 17px);
 }
 
 .home-link {
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: 999px;
     border: 1px solid rgba(212,175,55,0.24);
     background: rgba(212,175,55,0.08);
     color: var(--accent);
-    border-radius: 999px;
-    padding: 12px 18px;
-    font-family: inherit;
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s ease;
     white-space: nowrap;
 }
 
-.home-link:hover {
-    transform: translateY(-2px);
-}
-
 .panel-boxes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 16px;
-    margin-top: 26px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
 }
 
 .info-box {
+    padding: 18px;
+    border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.07);
     background: rgba(255,255,255,0.03);
-    border-radius: 22px;
-    padding: 18px;
 }
 
 .info-box strong {
     display: block;
     margin-bottom: 10px;
     color: white;
+    font-size: 15px;
 }
 
-.panel a {
-    color: var(--accent);
+.info-box span,
+.info-box a {
+    color: #d0d0d0;
+    line-height: 1.7;
+    font-size: 14px;
     text-decoration: none;
+}
+
+.info-box a {
+    color: var(--accent);
     font-weight: 700;
 }
 
-.panel a:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
     .panel-wrap {
-        left: 16px;
-        right: 16px;
+        left: 18px;
+        right: 18px;
         width: auto;
-        top: auto;
-        bottom: 16px;
+        top: calc(var(--top-space) + 78px);
+        height: calc(100vh - var(--top-space) - var(--bottom-space) - 96px);
         transform: none;
-        height: calc(100vh - 110px);
-    }
-
-    .sidebar {
-        width: min(86vw, 340px);
     }
 
     .home.inner-hidden {
-        transform: translateX(-40px) scale(0.97);
-    }
-
-    .topbar {
-        top: 14px;
-        right: 14px;
-        max-width: calc(100vw - 28px);
+        transform: scale(0.97);
     }
 }
 
-@media (max-width: 640px) {
-    .menu-toggle {
-        top: 14px;
-        left: 14px;
-        padding: 12px 16px;
+@media (max-width: 760px) {
+    .topbar label {
+        display: none;
     }
 
-    .sidebar {
-        padding-top: 74px;
+    .topbar {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .menu-toggle {
+        padding: 13px 16px;
+        font-size: 13px;
+    }
+
+    .home {
+        padding-top: 108px;
+    }
+
+    .hero {
+        gap: 16px;
+    }
+
+    .hero-badge {
+        max-width: 92vw;
+        font-size: 10px;
+    }
+
+    .video-frame {
+        width: min(340px, 92vw);
+        border-radius: 24px;
+        padding: 8px;
+    }
+
+    .video-frame video {
+        border-radius: 18px;
+    }
+
+    .hero-actions {
+        width: 100%;
+        max-width: 320px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-actions a,
+    .hero-actions button {
+        width: 100%;
+    }
+
+    .panel-wrap {
+        left: 12px;
+        right: 12px;
+        top: calc(var(--top-space) + 72px);
+        height: calc(100vh - var(--top-space) - var(--bottom-space) - 84px);
     }
 
     .panel {
-        padding: 22px;
+        padding: 20px;
         border-radius: 24px;
-    }
-
-    .hero p {
-        font-size: 16px;
     }
 
     .panel-top {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
     }
 
-    .topbar label {
-        display: none;
+    .home-link {
+        width: 100%;
+    }
+
+    .panel-boxes {
+        grid-template-columns: 1fr;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+        transform: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .menu-toggle {
+        top: 12px;
+        left: 12px;
+    }
+
+    .topbar {
+        top: 12px;
+        right: 12px;
+        max-width: calc(100vw - 24px);
+    }
+
+    .topbar select {
+        min-width: 78px;
+        font-size: 12px;
+    }
+
+    .quote {
+        font-size: clamp(24px, 8vw, 32px);
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .info-box {
+        padding: 16px;
     }
 }
 </style>
@@ -504,6 +609,8 @@ body::after {
 <body>
 
 <div class="shell">
+    <div class="overlay" id="overlay" onclick="goHome()"></div>
+
     <div class="topbar">
         <label for="languageSwitcher" data-i18n="languageLabel">Sprache</label>
         <select id="languageSwitcher" onchange="switchLanguage(this.value)">
@@ -520,7 +627,7 @@ body::after {
         </select>
     </div>
 
-    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" data-i18n="menuButton">Kategorien</button>
+    <button class="menu-toggle" onclick="toggleSidebar()" data-i18n="menuButton">Kategorien</button>
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -528,7 +635,7 @@ body::after {
             <h2 data-i18n="sidebarTitle">Navigation</h2>
         </div>
 
-        <div class="nav" id="nav">
+        <div class="nav">
             <button data-page="rules" data-i18n="navRules" onclick="openPage('rules')">Rules</button>
             <button data-page="support" data-i18n="navSupport" onclick="openPage('support')">Support</button>
             <button data-page="business" data-i18n="navBusiness" onclick="openPage('business')">Business</button>
@@ -549,14 +656,15 @@ body::after {
             </div>
 
             <div class="quote" data-i18n="heroQuote">Rare finds. Timeless style. Real community.</div>
+
             <p data-i18n="heroText">
                 Eine elegante Landingpage mit Fokus auf dem Video in der Mitte,
                 direktem Discord-Zugang und einer sauberen Kategorie-Ansicht links.
             </p>
 
             <div class="hero-actions">
-                <a href="https://discord.gg/DEINLINK" target="_blank" class="primary" data-i18n="discordButton">Discord beitreten</a>
-                <button onclick="openSidebarAndFirst()" type="button" data-i18n="openCategories">Kategorien öffnen</button>
+                <a href="https://discord.gg/FCz4RP28" target="_blank" class="primary" data-i18n="discordButton">Discord beitreten</a>
+                <button type="button" onclick="openSidebarAndFirst()" data-i18n="openCategories">Kategorien öffnen</button>
             </div>
         </section>
     </main>
@@ -865,7 +973,7 @@ const translations = {
         navBusiness: "Business",
         navVip: "VIP",
         navCooperation: "Coopération",
-        navTeam: "Équipe",
+        navTeam: "Team Up",
         heroBadge: "Trouvailles rares • Style intemporel • Vraie communauté",
         heroQuote: "Trouvailles rares. Style intemporel. Vraie communauté.",
         heroText: "Une landing page élégante centrée sur la vidéo, avec accès direct à Discord et une vue propre des catégories à gauche.",
@@ -909,7 +1017,7 @@ const translations = {
         cooperationBox1Text: "Lien, statistiques, concept, proposition.",
         cooperationBox2Title: "Objectif",
         cooperationBox2Text: "Des collaborations avec une qualité claire et une esthétique cohérente.",
-        teamKicker: "06 / Équipe",
+        teamKicker: "06 / Team Up",
         teamTitle: "Team Up",
         teamText: "Ici, les membres se connectent pour des projets, des trades, du contenu ou de nouvelles idées. Si tu cherches des personnes avec les mêmes goûts ou objectifs, tu es au bon endroit.",
         teamBox1Title: "Networking",
@@ -1050,58 +1158,58 @@ const translations = {
         navSupport: "Destek",
         navBusiness: "Business",
         navVip: "VIP",
-        navCooperation: "İş Birliği",
+        navCooperation: "Is Birligi",
         navTeam: "Team Up",
-        heroBadge: "Nadir Parçalar • Zamansız Stil • Gerçek Topluluk",
-        heroQuote: "Nadir parçalar. Zamansız stil. Gerçek topluluk.",
-        heroText: "Ortadaki videoya odaklanan, doğrudan Discord erişimi ve solda temiz kategori görünümü olan şık bir landing page.",
-        discordButton: "Discord'a Katıl",
-        openCategories: "Kategorileri Aç",
-        backHome: "Ana Sayfaya Dön",
+        heroBadge: "Nadir Parcalar • Zamansiz Stil • Gercek Topluluk",
+        heroQuote: "Nadir parcalar. Zamansiz stil. Gercek topluluk.",
+        heroText: "Ortadaki videoya odaklanan, dogrudan Discord erisimi ve solda temiz kategori gorunumu olan sik bir landing page.",
+        discordButton: "Discord'a Katil",
+        openCategories: "Kategorileri Ac",
+        backHome: "Ana Sayfaya Don",
         rulesKicker: "01 / Kurallar",
-        rulesTitle: "Sunucu Kuralları",
-        rulesText: "Orijinallik zorunludur. Replika, sahte ilan veya gizli kusur kabul edilmez. İlanlar dürüst, temiz ve şeffaf olmalıdır. Tüm üyelere saygı göstermek şarttır.",
+        rulesTitle: "Sunucu Kurallari",
+        rulesText: "Orijinallik zorunludur. Replika, sahte ilan veya gizli kusur kabul edilmez. Ilanlar durust, temiz ve seffaf olmalidir. Tum uyelere saygi gostermek sarttir.",
         rulesBox1Title: "Sahte Yok",
-        rulesBox1Text: "Sadece orijinal ürünler. İhlaller doğrudan kaldırılmaya yol açar.",
-        rulesBox2Title: "Tam Şeffaflık",
-        rulesBox2Text: "Durum, kusurlar ve kullanım izleri her zaman açıkça belirtilmelidir.",
-        rulesBox3Title: "Saygı",
-        rulesBox3Text: "Drama yok, spam yok, toksik davranış yok.",
+        rulesBox1Text: "Sadece orijinal urunler. Ihlaller dogrudan kaldirilmaya yol acar.",
+        rulesBox2Title: "Tam Seffaflik",
+        rulesBox2Text: "Durum, kusurlar ve kullanim izleri her zaman acikca belirtilmelidir.",
+        rulesBox3Title: "Saygi",
+        rulesBox3Text: "Drama yok, spam yok, toksik davranis yok.",
         supportKicker: "02 / Destek",
         supportTitle: "Destek ve Ticket",
-        supportText: "Yardım veya sorunlar için Discord'da ticket açman yeterli. Böylece her şey düzenli ve hızlı kalır. Trade, ilanlar veya topluluk hakkında soruların varsa doğru yer burası.",
+        supportText: "Yardim veya sorunlar icin Discord'da ticket acman yeterli. Boylece her sey duzenli ve hizli kalir. Trade, ilanlar veya topluluk hakkinda sorularin varsa dogru yer burasi.",
         supportBox1Title: "Discord",
         supportBox1Text: "Discord sunucusuna git",
-        supportBox2Title: "Yanıt süresi",
-        supportBox2Text: "Ticket'lar önceliklendirilir ve düzgün şekilde işlenir.",
+        supportBox2Title: "Yanit suresi",
+        supportBox2Text: "Ticket'lar onceliklendirilir ve duzgun sekilde islenir.",
         businessKicker: "03 / Business",
         businessTitle: "Business",
-        businessText: "Business talepleri, ortaklıklar ve profesyonel iş birlikleri iletişimi net ve verimli tutmak için doğrudan ve düzenli bir kanal üzerinden yürütülür.",
-        businessBox1Title: "Markalar ve satıcılar için",
-        businessBox1Text: "Her iki taraf için de net değer sağlayan ciddi iş birliği.",
-        businessBox2Title: "İletişim",
-        businessBox2Text: "En iyi yol önce Discord üzerinden ulaşıp isteğini kısaca anlatmaktır.",
+        businessText: "Business talepleri, ortakliklar ve profesyonel is birlikleri iletisimi net ve verimli tutmak icin dogrudan ve duzenli bir kanal uzerinden yurutulur.",
+        businessBox1Title: "Markalar ve saticilar icin",
+        businessBox1Text: "Her iki taraf icin de net deger saglayan ciddi is birligi.",
+        businessBox2Title: "Iletisim",
+        businessBox2Text: "En iyi yol once Discord uzerinden ulasip istegini kisaca anlatmaktir.",
         vipKicker: "04 / VIP",
-        vipTitle: "VIP Erişim",
-        vipText: "VIP, sunucu boost veya özel topluluk aktivitesi ile açılır. Üyeler daha fazla görünürlük, özel avantajlar ve öncelikli konum kazanır.",
-        vipBox1Title: "Daha Fazla Görünürlük",
-        vipBox1Text: "İlanların ve tekliflerin daha güçlü görünürlük kazanır.",
-        vipBox2Title: "Özel Avantajlar",
-        vipBox2Text: "Özel bölümlere ve seçili fırsatlara erişim.",
-        cooperationKicker: "05 / İş Birliği",
+        vipTitle: "VIP Erisim",
+        vipText: "VIP, sunucu boost veya ozel topluluk aktivitesi ile acilir. Uyeler daha fazla gorunurluk, ozel avantajlar ve oncelikli konum kazanir.",
+        vipBox1Title: "Daha Fazla Gorunurluk",
+        vipBox1Text: "Ilanlarin ve tekliflerin daha guclu gorunurluk kazanir.",
+        vipBox2Title: "Ozel Avantajlar",
+        vipBox2Text: "Ozel bolumlere ve secili firsatlara erisim.",
+        cooperationKicker: "05 / Is Birligi",
         cooperationTitle: "Cooperation",
-        cooperationText: "İş birliği için ana detaylara hemen ihtiyacımız var: link, istatistikler, konsept ve net teklifin. Bu sayede uyup uymadığını daha hızlı değerlendirebiliriz.",
+        cooperationText: "Is birligi icin ana detaylara hemen ihtiyacimiz var: link, istatistikler, konsept ve net teklifin. Bu sayede uyup uymadigini daha hizli degerlendirebiliriz.",
         cooperationBox1Title: "Gerekli",
         cooperationBox1Text: "Link, istatistikler, konsept, teklif.",
-        cooperationBox2Title: "Amaç",
-        cooperationBox2Text: "Net kaliteye ve uygun estetiğe sahip iş birlikleri.",
+        cooperationBox2Title: "Amac",
+        cooperationBox2Text: "Net kaliteye ve uygun estetige sahip is birlikleri.",
         teamKicker: "06 / Team Up",
         teamTitle: "Team Up",
-        teamText: "Burada üyeler projeler, trade, içerik veya yeni fikirler için bağ kurar. Benzer zevke veya hedeflere sahip insanları arıyorsan doğru yerdesin.",
+        teamText: "Burada uyeler projeler, trade, icerik veya yeni fikirler icin bag kurar. Benzer zevke veya hedeflere sahip insanlari ariyorsan dogru yerdesin.",
         teamBox1Title: "Networking",
-        teamBox1Text: "Yaratıcı veya ticari projeler için doğru bağlantıları bul.",
+        teamBox1Text: "Yaratici veya ticari projeler icin dogru baglantilari bul.",
         teamBox2Title: "Topluluk",
-        teamBox2Text: "Sadece market değil, gerçek iş birliği."
+        teamBox2Text: "Sadece market degil, gercek is birligi."
     },
     ar: {
         languageLabel: "اللغة",
@@ -1113,55 +1221,55 @@ const translations = {
         navBusiness: "الأعمال",
         navVip: "VIP",
         navCooperation: "التعاون",
-        navTeam: "فريق",
-        heroBadge: "قطع نادرة • أسلوب خالد • مجتمع حقيقي",
-        heroQuote: "قطع نادرة. أسلوب خالد. مجتمع حقيقي.",
-        heroText: "صفحة هبوط أنيقة تركّز على الفيديو في الوسط مع وصول مباشر إلى ديسكورد وعرض فئات نظيف على اليسار.",
-        discordButton: "الانضمام إلى ديسكورد",
+        navTeam: "Team Up",
+        heroBadge: "قطع نادرة • اسلوب خالد • مجتمع حقيقي",
+        heroQuote: "قطع نادرة. اسلوب خالد. مجتمع حقيقي.",
+        heroText: "صفحة هبوط انيقة تركز على الفيديو في الوسط مع وصول مباشر الى ديسكورد وعرض فئات نظيف على اليسار.",
+        discordButton: "الانضمام الى ديسكورد",
         openCategories: "فتح الفئات",
-        backHome: "العودة إلى الرئيسية",
+        backHome: "العودة الى الرئيسية",
         rulesKicker: "01 / القواعد",
         rulesTitle: "قواعد السيرفر",
-        rulesText: "الأصالة إلزامية. لا نسخ مقلدة ولا إعلانات مزيفة ولا عيوب مخفية. يجب أن تكون الإعلانات صادقة وواضحة وشفافة. احترام جميع الأعضاء شرط أساسي.",
+        rulesText: "الاصالة الزامية. لا نسخ مقلدة ولا اعلانات مزيفة ولا عيوب مخفية. يجب ان تكون الاعلانات صادقة وواضحة وشفافة. احترام جميع الاعضاء شرط اساسي.",
         rulesBox1Title: "ممنوع التقليد",
-        rulesBox1Text: "المنتجات الأصلية فقط. المخالفات تؤدي إلى الإزالة الفورية.",
+        rulesBox1Text: "المنتجات الاصلية فقط. المخالفات تؤدي الى الازالة الفورية.",
         rulesBox2Title: "شفافية كاملة",
-        rulesBox2Text: "يجب توضيح الحالة والعيوب وآثار الاستخدام بشكل كامل.",
+        rulesBox2Text: "يجب توضيح الحالة والعيوب واثار الاستخدام بشكل كامل.",
         rulesBox3Title: "الاحترام",
         rulesBox3Text: "لا دراما ولا سبام ولا سلوك سام.",
         supportKicker: "02 / الدعم",
         supportTitle: "الدعم والتذاكر",
-        supportText: "للمساعدة أو عند وجود مشكلة، افتح تذكرة على ديسكورد. بهذه الطريقة يبقى كل شيء منظماً وسريعاً. إذا كانت لديك أسئلة حول صفقة أو الإعلانات أو المجتمع فهذا هو المكان الصحيح.",
+        supportText: "للمساعدة او عند وجود مشكلة، افتح تذكرة على ديسكورد. بهذه الطريقة يبقى كل شيء منظما وسريعا. اذا كانت لديك اسئلة حول صفقة او الاعلانات او المجتمع فهذا هو المكان الصحيح.",
         supportBox1Title: "ديسكورد",
-        supportBox1Text: "الذهاب إلى سيرفر ديسكورد",
+        supportBox1Text: "الذهاب الى سيرفر ديسكورد",
         supportBox2Title: "وقت الرد",
-        supportBox2Text: "يتم إعطاء الأولوية للتذاكر ومعالجتها بشكل صحيح.",
-        businessKicker: "03 / الأعمال",
-        businessTitle: "الأعمال",
-        businessText: "تتم طلبات الأعمال والشراكات والتعاون المهني عبر قناة مباشرة ومنظمة للحفاظ على وضوح وكفاءة التواصل.",
+        supportBox2Text: "يتم اعطاء الاولوية للتذاكر ومعالجتها بشكل صحيح.",
+        businessKicker: "03 / الاعمال",
+        businessTitle: "الاعمال",
+        businessText: "تتم طلبات الاعمال والشراكات والتعاون المهني عبر قناة مباشرة ومنظمة للحفاظ على وضوح وكفاءة التواصل.",
         businessBox1Title: "للعلامات والبائعين",
         businessBox1Text: "تعاون جاد بقيمة واضحة للطرفين.",
         businessBox2Title: "التواصل",
-        businessBox2Text: "أفضل طريقة هي التواصل أولاً عبر ديسكورد وشرح الطلب باختصار.",
+        businessBox2Text: "افضل طريقة هي التواصل اولا عبر ديسكورد وشرح الطلب باختصار.",
         vipKicker: "04 / VIP",
         vipTitle: "دخول VIP",
-        vipText: "يتم فتح VIP عبر دعم السيرفر أو النشاط المميز داخل المجتمع. يحصل الأعضاء على ظهور أكبر ومزايا حصرية وأولوية أعلى.",
-        vipBox1Title: "وصول أكبر",
-        vipBox1Text: "تحصل إعلاناتك وعروضك على ظهور أقوى.",
+        vipText: "يتم فتح VIP عبر دعم السيرفر او النشاط المميز داخل المجتمع. يحصل الاعضاء على ظهور اكبر ومزايا حصرية واولوية اعلى.",
+        vipBox1Title: "وصول اكبر",
+        vipBox1Text: "تحصل اعلاناتك وعروضك على ظهور اقوى.",
         vipBox2Title: "مزايا حصرية",
-        vipBox2Text: "الوصول إلى أقسام خاصة وعروض مختارة.",
+        vipBox2Text: "الوصول الى اقسام خاصة وعروض مختارة.",
         cooperationKicker: "05 / التعاون",
         cooperationTitle: "التعاون",
-        cooperationText: "للتعاون نحتاج مباشرة إلى التفاصيل الأساسية: الرابط، الإحصائيات، الفكرة، والاقتراح الواضح. هذا يساعدنا على اتخاذ القرار بسرعة أكبر.",
+        cooperationText: "للتعاون نحتاج مباشرة الى التفاصيل الاساسية: الرابط، الاحصائيات، الفكرة، والاقتراح الواضح. هذا يساعدنا على اتخاذ القرار بسرعة اكبر.",
         cooperationBox1Title: "مطلوب",
-        cooperationBox1Text: "الرابط، الإحصائيات، الفكرة، الاقتراح.",
+        cooperationBox1Text: "الرابط، الاحصائيات، الفكرة، الاقتراح.",
         cooperationBox2Title: "الهدف",
         cooperationBox2Text: "تعاون بجودة واضحة وهوية جمالية مناسبة.",
-        teamKicker: "06 / الفريق",
+        teamKicker: "06 / Team Up",
         teamTitle: "Team Up",
-        teamText: "هنا يتواصل الأعضاء من أجل المشاريع أو الصفقات أو المحتوى أو الأفكار الجديدة. إذا كنت تبحث عن أشخاص لهم نفس الذوق أو الأهداف فأنت في المكان المناسب.",
+        teamText: "هنا يتواصل الاعضاء من اجل المشاريع او الصفقات او المحتوى او الافكار الجديدة. اذا كنت تبحث عن اشخاص لهم نفس الذوق او الاهداف فانت في المكان المناسب.",
         teamBox1Title: "التواصل",
-        teamBox1Text: "اعثر على الأشخاص المناسبين للمشاريع الإبداعية أو التجارية.",
+        teamBox1Text: "اعثر على الاشخاص المناسبين للمشاريع الابداعية او التجارية.",
         teamBox2Title: "المجتمع",
         teamBox2Text: "ليس مجرد سوق بل تعاون حقيقي."
     },
@@ -1229,7 +1337,7 @@ const translations = {
     },
     nl: {
         languageLabel: "Taal",
-        menuButton: "Categorieën",
+        menuButton: "Categorieen",
         sidebarBadge: "VELO Archive",
         sidebarTitle: "Navigatie",
         navRules: "Regels",
@@ -1242,7 +1350,7 @@ const translations = {
         heroQuote: "Zeldzame vondsten. Tijdloze stijl. Echte community.",
         heroText: "Een elegante landing page met focus op de video in het midden, directe Discord-toegang en een nette categorie-weergave links.",
         discordButton: "Word lid van Discord",
-        openCategories: "Categorieën openen",
+        openCategories: "Categorieen openen",
         backHome: "Terug naar home",
         rulesKicker: "01 / Regels",
         rulesTitle: "Serverregels",
@@ -1262,7 +1370,7 @@ const translations = {
         supportBox2Text: "Tickets krijgen prioriteit en worden netjes afgehandeld.",
         businessKicker: "03 / Business",
         businessTitle: "Business",
-        businessText: "Business-aanvragen, partnerships en professionele samenwerkingen verlopen via een direct en gestructureerd kanaal zodat communicatie duidelijk en efficiënt blijft.",
+        businessText: "Business-aanvragen, partnerships en professionele samenwerkingen verlopen via een direct en gestructureerd kanaal zodat communicatie duidelijk en efficient blijft.",
         businessBox1Title: "Voor merken & verkopers",
         businessBox1Text: "Serieuze samenwerking met duidelijke waarde voor beide kanten.",
         businessBox2Title: "Contact",
@@ -1283,14 +1391,14 @@ const translations = {
         cooperationBox2Text: "Samenwerkingen met duidelijke kwaliteit en passende esthetiek.",
         teamKicker: "06 / Team Up",
         teamTitle: "Team Up",
-        teamText: "Hier vinden leden elkaar voor projecten, trades, content of nieuwe ideeën. Als je mensen zoekt met een vergelijkbare smaak of doelen, zit je hier goed.",
+        teamText: "Hier vinden leden elkaar voor projecten, trades, content of nieuwe ideeen. Als je mensen zoekt met een vergelijkbare smaak of doelen, zit je hier goed.",
         teamBox1Title: "Networking",
-        teamBox1Text: "Vind de juiste contacten voor creatieve of commerciële projecten.",
+        teamBox1Text: "Vind de juiste contacten voor creatieve of commerciele projecten.",
         teamBox2Title: "Community",
         teamBox2Text: "Niet alleen een market, maar echte samenwerking."
     },
     pl: {
-        languageLabel: "Język",
+        languageLabel: "Jezyk",
         menuButton: "Kategorie",
         sidebarBadge: "VELO Archive",
         sidebarTitle: "Nawigacja",
@@ -1298,66 +1406,69 @@ const translations = {
         navSupport: "Wsparcie",
         navBusiness: "Business",
         navVip: "VIP",
-        navCooperation: "Współpraca",
+        navCooperation: "Wspolpraca",
         navTeam: "Team Up",
-        heroBadge: "Rzadkie znaleziska • Ponadczasowy styl • Prawdziwa społeczność",
-        heroQuote: "Rzadkie znaleziska. Ponadczasowy styl. Prawdziwa społeczność.",
-        heroText: "Elegancki landing page skupiony na wideo pośrodku, z bezpośrednim dostępem do Discorda i czystym widokiem kategorii po lewej stronie.",
-        discordButton: "Dołącz do Discord",
-        openCategories: "Otwórz kategorie",
-        backHome: "Powrót do strony głównej",
+        heroBadge: "Rzadkie znaleziska • Ponadczasowy styl • Prawdziwa spolecznosc",
+        heroQuote: "Rzadkie znaleziska. Ponadczasowy styl. Prawdziwa spolecznosc.",
+        heroText: "Elegancki landing page skupiony na wideo posrodku, z bezposrednim dostepem do Discorda i czystym widokiem kategorii po lewej stronie.",
+        discordButton: "Dolacz do Discord",
+        openCategories: "Otworz kategorie",
+        backHome: "Powrot do strony glownej",
         rulesKicker: "01 / Zasady",
         rulesTitle: "Zasady serwera",
-        rulesText: "Autentyczność jest obowiązkowa. Żadnych replik, fałszywych ofert ani ukrytych wad. Ogłoszenia muszą być uczciwe, przejrzyste i klarowne. Szacunek wobec wszystkich członków jest konieczny.",
-        rulesBox1Title: "Bez podróbek",
-        rulesBox1Text: "Tylko oryginalne przedmioty. Naruszenia skutkują natychmiastowym usunięciem.",
-        rulesBox2Title: "Pełna przejrzystość",
-        rulesBox2Text: "Zawsze jasno pokazuj stan, wady i ślady użytkowania.",
+        rulesText: "Autentycznosc jest obowiazkowa. Zadnych replik, falszywych ofert ani ukrytych wad. Ogloszenia musza byc uczciwe, przejrzyste i klarowne. Szacunek wobec wszystkich czlonkow jest konieczny.",
+        rulesBox1Title: "Bez podrobek",
+        rulesBox1Text: "Tylko oryginalne przedmioty. Naruszenia skutkuja natychmiastowym usunieciem.",
+        rulesBox2Title: "Pelna przejrzystosc",
+        rulesBox2Text: "Zawsze jasno pokazuj stan, wady i slady uzytkowania.",
         rulesBox3Title: "Szacunek",
         rulesBox3Text: "Bez dram, spamu i toksycznego zachowania.",
         supportKicker: "02 / Wsparcie",
         supportTitle: "Wsparcie i tickety",
-        supportText: "Jeśli potrzebujesz pomocy lub masz problem, po prostu otwórz ticket na Discordzie. Dzięki temu wszystko pozostaje uporządkowane i szybkie. Jeśli masz pytania o trade, ogłoszenia lub społeczność, to właściwe miejsce.",
+        supportText: "Jesli potrzebujesz pomocy lub masz problem, po prostu otworz ticket na Discordzie. Dzieki temu wszystko pozostaje uporzadkowane i szybkie. Jesli masz pytania o trade, ogloszenia lub spolecznosc, to wlasciwe miejsce.",
         supportBox1Title: "Discord",
-        supportBox1Text: "Przejdź do serwera Discord",
+        supportBox1Text: "Przejdz do serwera Discord",
         supportBox2Title: "Czas odpowiedzi",
-        supportBox2Text: "Tickety są priorytetyzowane i obsługiwane poprawnie.",
+        supportBox2Text: "Tickety sa priorytetyzowane i obslugiwane poprawnie.",
         businessKicker: "03 / Business",
         businessTitle: "Business",
-        businessText: "Zapytania biznesowe, partnerstwa i profesjonalne współprace odbywają się przez bezpośredni i uporządkowany kanał, aby komunikacja była jasna i skuteczna.",
-        businessBox1Title: "Dla marek i sprzedawców",
-        businessBox1Text: "Poważna współpraca z wyraźną korzyścią dla obu stron.",
+        businessText: "Zapytania biznesowe, partnerstwa i profesjonalne wspolprace odbywaja sie przez bezposredni i uporzadkowany kanal, aby komunikacja byla jasna i skuteczna.",
+        businessBox1Title: "Dla marek i sprzedawcow",
+        businessBox1Text: "Powazna wspolpraca z wyrazna korzyscia dla obu stron.",
         businessBox2Title: "Kontakt",
-        businessBox2Text: "Najlepiej najpierw skontaktować się przez Discord i krótko opisać sprawę.",
+        businessBox2Text: "Najlepiej najpierw skontaktowac sie przez Discord i krotko opisac sprawe.",
         vipKicker: "04 / VIP",
-        vipTitle: "Dostęp VIP",
-        vipText: "VIP odblokowuje się przez boostowanie serwera lub szczególną aktywność w społeczności. Członkowie otrzymują większą widoczność, ekskluzywne korzyści i priorytetową obecność.",
-        vipBox1Title: "Większy zasięg",
-        vipBox1Text: "Twoje oferty i ogłoszenia zyskują większą widoczność.",
-        vipBox2Title: "Ekskluzywne korzyści",
-        vipBox2Text: "Dostęp do specjalnych sekcji i wybranych ofert.",
-        cooperationKicker: "05 / Współpraca",
-        cooperationTitle: "Współpraca",
-        cooperationText: "Do współpracy potrzebujemy od razu kluczowych informacji: link, statystyki, koncept i konkretną propozycję. To pozwala szybciej ocenić, czy to pasuje.",
+        vipTitle: "Dostep VIP",
+        vipText: "VIP odblokowuje sie przez boostowanie serwera lub szczegolna aktywnosc w spolecznosci. Czlonkowie otrzymuja wieksza widocznosc, ekskluzywne korzysci i priorytetowa obecnosc.",
+        vipBox1Title: "Wiekszy zasieg",
+        vipBox1Text: "Twoje oferty i ogloszenia zyskuja wieksza widocznosc.",
+        vipBox2Title: "Ekskluzywne korzysci",
+        vipBox2Text: "Dostep do specjalnych sekcji i wybranych ofert.",
+        cooperationKicker: "05 / Wspolpraca",
+        cooperationTitle: "Wspolpraca",
+        cooperationText: "Do wspolpracy potrzebujemy od razu kluczowych informacji: link, statystyki, koncept i konkretna propozycje. To pozwala szybciej ocenic, czy to pasuje.",
         cooperationBox1Title: "Wymagane",
         cooperationBox1Text: "Link, statystyki, koncept, propozycja.",
         cooperationBox2Title: "Cel",
-        cooperationBox2Text: "Współprace z wyraźną jakością i pasującą estetyką.",
+        cooperationBox2Text: "Wspolprace z wyrazna jakoscia i pasujaca estetyka.",
         teamKicker: "06 / Team Up",
         teamTitle: "Team Up",
-        teamText: "Tutaj członkowie łączą się w sprawie projektów, trade'ów, contentu lub nowych pomysłów. Jeśli szukasz osób o podobnym guście lub celach, jesteś we właściwym miejscu.",
+        teamText: "Tutaj czlonkowie lacza sie w sprawie projektow, trade'ow, contentu lub nowych pomyslow. Jesli szukasz osob o podobnym guscie lub celach, jestes we wlasciwym miejscu.",
         teamBox1Title: "Networking",
-        teamBox1Text: "Znajdź właściwe kontakty do kreatywnych lub komercyjnych projektów.",
-        teamBox2Title: "Społeczność",
-        teamBox2Text: "To nie tylko market, ale prawdziwa współpraca."
+        teamBox1Text: "Znajdz wlasciwe kontakty do kreatywnych lub komercyjnych projektow.",
+        teamBox2Title: "Spolecznosc",
+        teamBox2Text: "To nie tylko market, ale prawdziwa wspolpraca."
     }
 };
 
 const sidebar = document.getElementById('sidebar');
 const home = document.getElementById('home');
 const contentStage = document.getElementById('contentStage');
+const overlay = document.getElementById('overlay');
 const navButtons = [...document.querySelectorAll('.nav button')];
 const panels = [...document.querySelectorAll('.panel')];
+const languageSwitcher = document.getElementById('languageSwitcher');
+
 let currentPage = null;
 let sidebarOpen = false;
 
@@ -1367,22 +1478,18 @@ window.addEventListener('mousemove', e => {
 });
 
 function toggleSidebar() {
-    if (sidebarOpen) {
-        goHome();
-    } else {
-        openSidebarAndFirst();
-    }
+    if (sidebarOpen) goHome();
+    else openSidebarAndFirst();
 }
 
 function openSidebarAndFirst() {
     sidebarOpen = true;
     sidebar.classList.add('open');
+    overlay.classList.add('show');
     home.classList.add('inner-hidden');
     contentStage.classList.add('active');
 
-    if (!currentPage) {
-        openPage('rules', true);
-    }
+    if (!currentPage) openPage('rules', true);
 }
 
 function setActiveButton(id) {
@@ -1397,6 +1504,7 @@ function openPage(id, instant = false) {
 
     sidebarOpen = true;
     sidebar.classList.add('open');
+    overlay.classList.add('show');
     home.classList.add('inner-hidden');
     contentStage.classList.add('active');
     setActiveButton(id);
@@ -1436,6 +1544,7 @@ function openPage(id, instant = false) {
 function goHome() {
     sidebarOpen = false;
     sidebar.classList.remove('open');
+    overlay.classList.remove('show');
     home.classList.remove('inner-hidden');
     contentStage.classList.remove('active');
 
@@ -1454,21 +1563,36 @@ function switchLanguage(lang) {
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-            el.textContent = dict[key];
-        }
+        if (dict[key]) el.textContent = dict[key];
     });
 }
 
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        goHome();
-    }
+    if (e.key === 'Escape') goHome();
 });
 
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].clientX;
+
+    if (touchStartX < 40 && touchEndX - touchStartX > 70 && !sidebarOpen) {
+        openSidebarAndFirst();
+    }
+
+    if (sidebarOpen && touchStartX - touchEndX > 90) {
+        goHome();
+    }
+}, { passive: true });
+
 switchLanguage('de');
+languageSwitcher.value = 'de';
 </script>
 
 </body>
 </html>
-
