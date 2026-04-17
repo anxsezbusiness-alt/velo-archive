@@ -2,33 +2,45 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
 <title>VELO Archive</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --bg: #050505;
-    --panel: rgba(14, 14, 14, 0.96);
-    --panel-2: rgba(22, 22, 22, 0.92);
-    --line: rgba(255, 255, 255, 0.08);
-    --text: #f2f2f2;
-    --muted: #aaaaaa;
-    --accent: #d4af37;
-    --accent-soft: rgba(212, 175, 55, 0.16);
-    --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
-    --radius: 28px;
-    --sidebar-width: 320px;
+    --bg: #e7ddcf;
+    --bg-soft: #f7f1e8;
+    --panel: rgba(255, 250, 244, 0.9);
+    --panel-strong: rgba(253, 248, 241, 0.96);
+    --line: rgba(22, 43, 77, 0.12);
+    --text: #172338;
+    --muted: #63708a;
+    --accent: #162b4d;
+    --accent-soft: rgba(22, 43, 77, 0.08);
+    --accent-warm: #b38e58;
+    --shadow: 0 30px 90px rgba(21, 35, 56, 0.14);
+    --shadow-soft: 0 18px 40px rgba(21, 35, 56, 0.1);
+    --sidebar-width: 300px;
+    --content-max: 1180px;
     --top-space: max(16px, env(safe-area-inset-top));
     --bottom-space: max(16px, env(safe-area-inset-bottom));
     --left-space: max(16px, env(safe-area-inset-left));
     --right-space: max(16px, env(safe-area-inset-right));
+    --logo-rotate-x: 0deg;
+    --logo-rotate-y: 0deg;
+    --logo-scale: 1;
+    --mouse-x: 24%;
+    --mouse-y: 18%;
 }
 
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 html, body {
@@ -44,24 +56,24 @@ html, body {
 body::before {
     content: "";
     position: fixed;
-    inset: -20%;
-    background:
-        radial-gradient(circle at var(--x, 20%) var(--y, 20%), rgba(212,175,55,0.13), transparent 18%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03), transparent 20%),
-        linear-gradient(135deg, #000 0%, #060606 45%, #0b0b0b 100%);
+    inset: -18%;
     z-index: -3;
-    transition: 0.25s ease;
+    background:
+        radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(179, 142, 88, 0.2), transparent 18%),
+        radial-gradient(circle at 82% 18%, rgba(22, 43, 77, 0.08), transparent 18%),
+        linear-gradient(135deg, #efe5d8 0%, #e7ddcf 45%, #f7f1e8 100%);
+    transition: 0.35s ease;
 }
 
 body::after {
     content: "";
     position: fixed;
     inset: 0;
-    background:
-        linear-gradient(to right, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.46) 30%, rgba(0,0,0,0) 60%),
-        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.24) 100%);
     z-index: -2;
     pointer-events: none;
+    background:
+        linear-gradient(to bottom, rgba(255,255,255,0.3), transparent 34%),
+        radial-gradient(circle at center, transparent 46%, rgba(22,43,77,0.05) 100%);
 }
 
 button,
@@ -71,32 +83,222 @@ a {
 }
 
 .shell {
-    position: relative;
-    width: 100%;
     min-height: 100vh;
+    position: relative;
+}
+
+.grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.07;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(22,43,77,0.08) 0 1px, transparent 1.2px),
+        radial-gradient(circle at 75% 60%, rgba(179,142,88,0.1) 0 1px, transparent 1.2px);
+    background-size: 20px 20px, 26px 26px;
+}
+
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,0.24), transparent 30%),
+        linear-gradient(180deg, #efe4d4 0%, #e7ddcf 55%, #ddd0bf 100%);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.intro::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(179,142,88,0.16), transparent 16%),
+        radial-gradient(circle at 72% 24%, rgba(22,43,77,0.08), transparent 18%);
+    animation: introGlow 2.2s ease both;
+}
+
+.intro.hide {
+    animation: introLiftAway 0.7s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.intro-inner {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    transform: translateY(24px);
+    animation: introTextIn 1s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.intro-kicker {
+    margin-bottom: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(22,43,77,0.68);
+}
+
+.intro-logo {
+    margin: 0;
+    font-size: clamp(82px, 18vw, 240px);
+    line-height: 0.82;
+    letter-spacing: 0.12em;
+    font-weight: 900;
+    color: var(--accent);
+    text-shadow: 0 18px 34px rgba(22,43,77,0.09);
+}
+
+.intro-sub {
+    margin-top: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3vw, 40px);
+    font-style: italic;
+    color: rgba(22,43,77,0.72);
+}
+
+.intro-hand-wrap {
+    position: absolute;
+    left: 50%;
+    bottom: -24px;
+    transform: translateX(-50%);
+    width: min(420px, 70vw);
+    height: 280px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.intro-pull-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 170px;
+    border-radius: 999px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(22,43,77,0.06), rgba(22,43,77,0.22));
+    animation: linePull 1.5s ease-in-out 0.4s both;
+}
+
+.intro-hand {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 190px;
+    height: 180px;
+    transform: translateX(-50%) translateY(80px) rotate(-10deg);
+    animation: handPullUp 1.45s cubic-bezier(.22,1,.36,1) 0.38s forwards;
+    filter: drop-shadow(0 18px 30px rgba(64, 40, 28, 0.18));
+}
+
+.palm {
+    position: absolute;
+    left: 44px;
+    bottom: 26px;
+    width: 104px;
+    height: 104px;
+    border-radius: 44px 44px 38px 38px;
+    background: linear-gradient(180deg, #f0cdb7 0%, #e7bda1 55%, #dbab8f 100%);
+    box-shadow:
+        inset -10px -10px 18px rgba(163, 96, 68, 0.14),
+        inset 10px 10px 18px rgba(255, 235, 220, 0.46);
+}
+
+.thumb {
+    position: absolute;
+    left: 20px;
+    bottom: 62px;
+    width: 58px;
+    height: 84px;
+    border-radius: 40px;
+    background: linear-gradient(180deg, #efccb6 0%, #ddb093 100%);
+    transform: rotate(-34deg);
+    box-shadow:
+        inset -8px -8px 14px rgba(160, 94, 66, 0.15),
+        inset 8px 8px 14px rgba(255, 235, 220, 0.4);
+}
+
+.finger {
+    position: absolute;
+    bottom: 102px;
+    width: 28px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #f1ceb8 0%, #ddb093 100%);
+    box-shadow:
+        inset -6px -6px 12px rgba(162, 95, 67, 0.14),
+        inset 6px 6px 12px rgba(255, 235, 220, 0.42);
+}
+
+.finger.one {
+    left: 58px;
+    height: 96px;
+    transform: rotate(-4deg);
+}
+
+.finger.two {
+    left: 88px;
+    height: 112px;
+}
+
+.finger.three {
+    left: 118px;
+    height: 104px;
+    transform: rotate(4deg);
+}
+
+.finger.four {
+    left: 148px;
+    height: 88px;
+    transform: rotate(8deg);
+}
+
+.hand-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 220px;
+    height: 48px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(22,43,77,0.14), transparent 70%);
+    animation: shadowBreath 1.6s ease-in-out 0.35s both;
+}
+
+.site-content {
+    opacity: 0;
+    transform: translateY(120px);
+}
+
+.site-content.reveal {
+    animation: siteRise 0.95s cubic-bezier(.22,1,.36,1) 1.55s forwards;
 }
 
 .topbar {
     position: fixed;
     top: var(--top-space);
     right: var(--right-space);
-    z-index: 90;
+    z-index: 110;
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 14px;
-    border: 1px solid var(--line);
+    padding: 12px 14px;
     border-radius: 999px;
-    background: rgba(10, 10, 10, 0.82);
+    border: 1px solid rgba(255,255,255,0.36);
+    background: rgba(255, 249, 242, 0.78);
     backdrop-filter: blur(18px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.26);
+    box-shadow: var(--shadow-soft);
     max-width: calc(100vw - 32px);
 }
 
 .topbar label {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--muted);
     white-space: nowrap;
@@ -106,11 +308,10 @@ a {
     border: none;
     outline: none;
     background: transparent;
-    color: white;
+    color: var(--accent);
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    min-width: 96px;
 }
 
 .topbar option {
@@ -121,34 +322,62 @@ a {
     position: fixed;
     top: var(--top-space);
     left: var(--left-space);
-    z-index: 90;
-    border: 1px solid var(--line);
-    background: rgba(10, 10, 10, 0.82);
-    color: var(--text);
-    backdrop-filter: blur(18px);
-    border-radius: 999px;
+    z-index: 120;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
     padding: 14px 18px;
-    min-height: 48px;
-    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.36);
+    border-radius: 999px;
+    background: rgba(255, 249, 242, 0.78);
+    color: var(--accent);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-soft);
+    font-weight: 800;
     letter-spacing: 0.08em;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.menu-toggle:hover {
-    transform: translateY(-2px);
-    border-color: rgba(212, 175, 55, 0.45);
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 22px 44px rgba(22,43,77,0.14);
+    border-color: rgba(22,43,77,0.16);
+}
+
+.menu-toggle.compact {
+    padding-inline: 14px;
+}
+
+.menu-toggle.compact .menu-label {
+    display: none;
+}
+
+.menu-icon {
+    width: 18px;
+    display: grid;
+    gap: 4px;
+}
+
+.menu-icon span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 999px;
 }
 
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.42);
+    background: rgba(16, 25, 39, 0.16);
     backdrop-filter: blur(4px);
     opacity: 0;
     pointer-events: none;
-    transition: 0.35s ease;
-    z-index: 55;
+    transition: 0.3s ease;
+    z-index: 90;
 }
 
 .overlay.show {
@@ -156,22 +385,34 @@ a {
     pointer-events: auto;
 }
 
+.layout {
+    min-height: 100vh;
+    padding: calc(var(--top-space) + 82px) var(--right-space) calc(var(--bottom-space) + 18px) var(--left-space);
+}
+
 .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: calc(var(--top-space) + 70px);
+    left: var(--left-space);
     width: min(var(--sidebar-width), 88vw);
-    height: 100vh;
-    padding: calc(var(--top-space) + 64px) 18px var(--bottom-space);
-    background: linear-gradient(180deg, rgba(18,18,18,0.97), rgba(8,8,8,0.99));
-    backdrop-filter: blur(24px);
-    border-right: 1px solid rgba(255,255,255,0.06);
-    transform: translateX(-100%);
+    max-height: calc(100vh - var(--top-space) - var(--bottom-space) - 92px);
+    padding: 20px;
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(255,251,245,0.95), rgba(244,237,227,0.93));
+    border: 1px solid rgba(255,255,255,0.42);
+    backdrop-filter: blur(22px);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+    z-index: 100;
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.42s cubic-bezier(.22,1,.36,1), opacity 0.3s ease;
+}
+
+.sidebar.collapsed {
+    transform: translateX(calc(-100% - 24px));
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.45s cubic-bezier(.22,1,.36,1), opacity 0.3s ease;
-    z-index: 70;
-    overflow-y: auto;
 }
 
 .sidebar.open {
@@ -181,24 +422,34 @@ a {
 }
 
 .sidebar-header {
-    padding: 0 8px 18px;
+    padding: 2px 4px 18px;
+    margin-bottom: 18px;
     border-bottom: 1px solid var(--line);
-    margin-bottom: 16px;
 }
 
 .sidebar-header span {
     display: block;
-    color: var(--accent);
-    font-size: 12px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
     margin-bottom: 10px;
+    color: var(--accent-warm);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
 }
 
 .sidebar-header h2 {
     margin: 0;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 900;
+    line-height: 1;
+    color: var(--accent);
+}
+
+.sidebar-header p {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
 }
 
 .nav {
@@ -209,138 +460,290 @@ a {
 
 .nav button {
     width: 100%;
+    min-height: 56px;
+    padding: 16px 18px;
     text-align: left;
-    padding: 16px;
-    min-height: 52px;
-    border-radius: 18px;
     border: 1px solid transparent;
-    background: transparent;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.55);
     color: var(--muted);
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease, color 0.24s ease, border-color 0.24s ease;
 }
 
 .nav button:hover,
+.nav button:focus-visible,
 .nav button.active {
-    color: white;
-    background: linear-gradient(90deg, var(--accent-soft), rgba(255,255,255,0.02));
-    border-color: rgba(212,175,55,0.24);
-    transform: translateX(4px);
+    color: var(--accent);
+    background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(234,225,212,0.95));
+    border-color: rgba(22,43,77,0.12);
+    transform: translateX(4px) scale(1.02);
+    box-shadow: 0 16px 30px rgba(22,43,77,0.08);
+}
+
+.stage {
+    width: min(var(--content-max), 100%);
+    min-height: calc(100vh - var(--top-space) - var(--bottom-space) - 100px);
+    margin: 0 auto;
+    padding-left: calc(var(--sidebar-width) + 22px);
+    transition: padding-left 0.42s cubic-bezier(.22,1,.36,1);
+}
+
+.shell.sidebar-collapsed .stage {
+    padding-left: 0;
+}
+
+.home,
+.content-stage {
+    width: 100%;
+    min-height: calc(100vh - var(--top-space) - var(--bottom-space) - 100px);
+    position: relative;
 }
 
 .home {
-    position: relative;
-    min-height: 100vh;
     display: grid;
     place-items: center;
-    padding: clamp(104px, 14vh, 140px) 20px calc(var(--bottom-space) + 18px);
-    transition: opacity 0.35s ease, filter 0.35s ease;
+    transition: opacity 0.3s ease, transform 0.35s ease, filter 0.3s ease;
 }
 
 .home.inner-hidden {
+    position: absolute;
+    inset: 0;
     opacity: 0;
-    filter: blur(10px);
+    transform: translateY(20px);
+    filter: blur(6px);
     pointer-events: none;
 }
 
 .hero {
-    width: min(980px, 100%);
+    width: min(1040px, 100%);
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) minmax(320px, 1fr);
+    align-items: center;
+    gap: clamp(26px, 4vw, 54px);
+    padding: clamp(24px, 5vw, 40px);
+    border-radius: 36px;
+    background: linear-gradient(145deg, rgba(255,251,245,0.72), rgba(250,245,237,0.58));
+    border: 1px solid rgba(255,255,255,0.42);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow);
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+}
+
+.logo-card {
+    width: min(380px, 100%);
+    padding: 14px;
+    border-radius: 32px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(236,226,211,0.92));
+    box-shadow: 0 34px 70px rgba(22,43,77,0.14);
+    transform-style: preserve-3d;
+    transform: perspective(1400px) rotateX(var(--logo-rotate-x)) rotateY(var(--logo-rotate-y)) scale(var(--logo-scale));
+    transition: transform 0.28s ease, box-shadow 0.3s ease;
+    will-change: transform;
+}
+
+.logo-card:hover {
+    box-shadow: 0 40px 82px rgba(22,43,77,0.18);
+}
+
+.logo-inner {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    padding: 24px;
+    border-radius: 24px;
+    display: flex;
+    align-items: flex-end;
+    background:
+        radial-gradient(circle at top right, rgba(179,142,88,0.24), transparent 34%),
+        linear-gradient(160deg, rgba(16,33,63,0.96), rgba(30,49,83,0.92));
+}
+
+.logo-inner::before {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.logo-inner video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.24;
+    filter: saturate(0.8) contrast(1.05);
+}
+
+.logo-badge {
+    position: absolute;
+    top: 26px;
+    left: 26px;
+    z-index: 2;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.76);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.logo-text {
+    position: relative;
+    z-index: 2;
+    color: #f8f2e8;
+}
+
+.logo-text .eyebrow {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(248,242,232,0.74);
+}
+
+.logo-text h1 {
+    margin: 0;
+    font-size: clamp(56px, 9vw, 94px);
+    line-height: 0.9;
+    letter-spacing: 0.08em;
+    font-weight: 900;
+}
+
+.logo-text p {
+    margin: 10px 0 0;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(248,242,232,0.74);
+}
+
+.hero-copy {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
+    gap: 18px;
 }
 
 .hero-badge {
+    width: fit-content;
     padding: 10px 16px;
     border-radius: 999px;
-    border: 1px solid rgba(212,175,55,0.28);
-    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(22,43,77,0.12);
+    background: rgba(255,255,255,0.58);
     color: var(--accent);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     line-height: 1.5;
 }
 
-.video-frame {
-    width: min(380px, 90vw);
-    border-radius: 30px;
-    padding: 10px;
-    background: linear-gradient(145deg, rgba(212,175,55,0.28), rgba(255,255,255,0.05));
-    box-shadow: 0 28px 80px rgba(0,0,0,0.45);
-}
-
-.video-frame video {
-    width: 100%;
-    display: block;
-    border-radius: 22px;
-    background: #111;
-}
-
 .quote {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4vw, 44px);
-    color: rgba(255,255,255,0.88);
+    font-size: clamp(40px, 6vw, 72px);
+    color: var(--accent);
     font-style: italic;
-    line-height: 1.1;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
 }
 
 .hero p {
     margin: 0;
-    max-width: 720px;
-    color: #d2d2d2;
-    font-size: clamp(15px, 2vw, 18px);
-    line-height: 1.85;
+    max-width: 620px;
+    color: var(--muted);
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.9;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.stat-card {
+    padding: 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.48);
+    border: 1px solid rgba(22,43,77,0.08);
+    box-shadow: var(--shadow-soft);
+}
+
+.stat-card strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 22px;
+    color: var(--accent);
+}
+
+.stat-card span {
+    display: block;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
 }
 
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 12px;
+    padding-top: 4px;
 }
 
 .hero-actions a,
-.hero-actions button {
-    min-height: 50px;
+.hero-actions button,
+.home-link {
+    min-height: 52px;
     padding: 14px 22px;
     border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(255,255,255,0.03);
-    color: white;
+    border: 1px solid rgba(22,43,77,0.12);
+    background: rgba(255,255,255,0.68);
+    color: var(--accent);
     text-decoration: none;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.3s ease;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease, border-color 0.24s ease;
 }
 
 .hero-actions a.primary {
-    background: linear-gradient(135deg, #e1bb46, #b7921f);
-    color: #111;
+    background: linear-gradient(135deg, #162b4d, #284777);
+    color: #f7f0e7;
     border-color: transparent;
 }
 
 .hero-actions a:hover,
-.hero-actions button:hover {
-    transform: translateY(-2px);
+.hero-actions button:hover,
+.home-link:hover,
+.hero-actions a:focus-visible,
+.hero-actions button:focus-visible,
+.home-link:focus-visible {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 22px 44px rgba(22,43,77,0.14);
 }
 
 .content-stage {
-    position: fixed;
-    inset: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 60;
 }
 
 .content-stage.active {
@@ -349,57 +752,41 @@ a {
 }
 
 .panel-wrap {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(960px, calc(100vw - 40px));
-    height: min(80vh, 760px);
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - var(--top-space) - var(--bottom-space) - 100px);
 }
 
 .panel {
     position: absolute;
     inset: 0;
-    padding: 30px;
-    background: linear-gradient(180deg, rgba(24,24,24,0.96), rgba(10,10,10,0.99));
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 30px;
+    padding: clamp(24px, 4vw, 36px);
+    border-radius: 34px;
+    background: linear-gradient(180deg, rgba(255,251,245,0.9), rgba(249,242,232,0.95));
+    border: 1px solid rgba(255,255,255,0.42);
     box-shadow: var(--shadow);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     opacity: 0;
-    transform: translateX(80px) scale(0.96);
+    transform: translateY(28px) scale(0.985);
     filter: blur(8px);
-    clip-path: inset(0 0 0 100% round 30px);
-    transition:
-        transform 0.65s cubic-bezier(.22,1,.36,1),
-        opacity 0.42s ease,
-        filter 0.42s ease,
-        clip-path 0.65s cubic-bezier(.22,1,.36,1);
+    pointer-events: none;
+    transition: transform 0.48s cubic-bezier(.22,1,.36,1), opacity 0.3s ease, filter 0.3s ease;
 }
 
 .panel.active {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
     filter: blur(0);
-    clip-path: inset(0 0 0 0 round 30px);
+    pointer-events: auto;
     z-index: 3;
 }
 
-.panel.leaving-left {
+.panel.leaving {
     opacity: 0;
-    transform: translateX(-90px) scale(0.95);
-    filter: blur(10px);
-    clip-path: inset(0 100% 0 0 round 30px);
-    z-index: 1;
-}
-
-.panel.leaving-right {
-    opacity: 0;
-    transform: translateX(90px) scale(0.95);
-    filter: blur(10px);
-    clip-path: inset(0 0 0 100% round 30px);
-    z-index: 1;
+    transform: translateY(-14px) scale(0.98);
+    filter: blur(6px);
+    pointer-events: none;
 }
 
 .panel-top {
@@ -407,150 +794,292 @@ a {
     justify-content: space-between;
     align-items: flex-start;
     gap: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
 .panel-kicker {
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 12px;
-    font-weight: 700;
     margin-bottom: 10px;
+    color: var(--accent-warm);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
 }
 
 .panel h2 {
     margin: 0;
-    font-size: clamp(28px, 4vw, 48px);
+    font-size: clamp(30px, 4vw, 56px);
     font-weight: 900;
-    line-height: 1.05;
+    line-height: 0.96;
+    color: var(--accent);
 }
 
 .panel p {
     margin: 0;
-    color: #d4d4d4;
-    line-height: 1.9;
+    max-width: 70ch;
+    color: var(--muted);
     font-size: clamp(15px, 2vw, 17px);
-}
-
-.home-link {
-    min-height: 48px;
-    padding: 12px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(212,175,55,0.24);
-    background: rgba(212,175,55,0.08);
-    color: var(--accent);
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s ease;
-    white-space: nowrap;
+    line-height: 1.9;
 }
 
 .panel-boxes {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin-top: 24px;
+    gap: 16px;
+    margin-top: 26px;
 }
 
 .info-box {
-    padding: 18px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.07);
-    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 24px;
+    border: 1px solid rgba(22,43,77,0.08);
+    background: rgba(255,255,255,0.58);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 42px rgba(22,43,77,0.12);
 }
 
 .info-box strong {
     display: block;
     margin-bottom: 10px;
-    color: white;
+    color: var(--accent);
     font-size: 15px;
 }
 
 .info-box span,
 .info-box a {
-    color: #d0d0d0;
-    line-height: 1.7;
+    color: var(--muted);
     font-size: 14px;
+    line-height: 1.7;
     text-decoration: none;
 }
 
 .info-box a {
     color: var(--accent);
-    font-weight: 700;
+    font-weight: 800;
 }
 
-@media (max-width: 1100px) {
-    .panel-wrap {
-        width: calc(100vw - 32px);
-        height: calc(100vh - var(--top-space) - var(--bottom-space) - 110px);
-        top: calc(var(--top-space) + 82px);
-        left: 16px;
-        transform: none;
+[data-animate] {
+    opacity: 0;
+    transform: translateY(26px) scale(0.95);
+    transition: opacity 0.9s cubic-bezier(.22,1,.36,1), transform 0.9s cubic-bezier(.22,1,.36,1);
+    transition-delay: var(--delay, 0ms);
+}
+
+[data-animate].in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+[data-parallax] {
+    will-change: transform;
+}
+
+@keyframes introGlow {
+    0% { opacity: 0; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes introTextIn {
+    0% {
+        opacity: 0;
+        transform: translateY(34px) scale(0.92);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
     }
 }
 
-@media (max-width: 760px) {
+@keyframes linePull {
+    0% {
+        height: 0;
+        opacity: 0;
+        transform: translateX(-50%) translateY(28px);
+    }
+    100% {
+        height: 170px;
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes handPullUp {
+    0% {
+        transform: translateX(-50%) translateY(94px) rotate(-14deg) scale(0.92);
+    }
+    55% {
+        transform: translateX(-50%) translateY(0) rotate(-7deg) scale(1);
+    }
+    100% {
+        transform: translateX(-50%) translateY(-18px) rotate(-4deg) scale(1.02);
+    }
+}
+
+@keyframes shadowBreath {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.76); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes introLiftAway {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-120px);
+        filter: blur(10px);
+        visibility: hidden;
+    }
+}
+
+@keyframes siteRise {
+    0% {
+        opacity: 0;
+        transform: translateY(120px) scale(0.985);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@media (max-width: 1100px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+        order: -1;
+    }
+
+    .logo-inner {
+        min-height: 460px;
+    }
+}
+
+@media (max-width: 860px) {
+    .layout {
+        padding-top: calc(var(--top-space) + 74px);
+    }
+
+    .sidebar {
+        top: calc(var(--top-space) + 62px);
+        width: min(320px, calc(100vw - 24px));
+        max-height: calc(100vh - var(--top-space) - var(--bottom-space) - 76px);
+        transform: translateX(calc(-100% - 24px));
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .stage,
+    .shell.sidebar-collapsed .stage {
+        padding-left: 0;
+    }
+
+    .menu-toggle {
+        padding-inline: 14px;
+    }
+
+    .menu-toggle .menu-label {
+        display: none;
+    }
+
+    .hero {
+        padding: 18px;
+        border-radius: 28px;
+    }
+
+    .logo-inner {
+        min-height: 400px;
+    }
+
+    .hero-stats,
+    .panel-boxes {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        border-radius: 26px;
+    }
+
+    .intro-hand-wrap {
+        width: 80vw;
+        height: 220px;
+    }
+
+    .intro-hand {
+        transform-origin: center bottom;
+        scale: 0.84;
+    }
+}
+
+@media (max-width: 640px) {
     .topbar label {
         display: none;
     }
 
     .topbar {
+        top: 12px;
+        right: 12px;
         padding: 10px 12px;
         gap: 8px;
+        max-width: calc(100vw - 84px);
     }
 
     .menu-toggle {
-        padding: 13px 16px;
-        font-size: 13px;
+        top: 12px;
+        left: 12px;
+        min-height: 46px;
     }
 
-    .home {
-        padding-top: 108px;
+    .layout {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
     }
 
-    .hero {
-        gap: 16px;
+    .sidebar {
+        left: 12px;
+        top: 64px;
+        width: calc(100vw - 24px);
+        max-height: calc(100svh - 76px);
+        padding: 16px;
     }
 
-    .hero-badge {
-        max-width: 92vw;
-        font-size: 10px;
+    .home,
+    .content-stage,
+    .panel-wrap,
+    .stage {
+        min-height: calc(100svh - 90px);
     }
 
-    .video-frame {
-        width: min(340px, 92vw);
-        border-radius: 24px;
-        padding: 8px;
-    }
-
-    .video-frame video {
-        border-radius: 18px;
+    .quote {
+        font-size: clamp(34px, 11vw, 52px);
     }
 
     .hero-actions {
-        width: 100%;
-        max-width: 320px;
         flex-direction: column;
-        align-items: stretch;
     }
 
     .hero-actions a,
-    .hero-actions button {
+    .hero-actions button,
+    .home-link {
         width: 100%;
     }
 
-    .panel-wrap {
-        left: 12px;
-        right: 12px;
-        width: auto;
-        top: calc(var(--top-space) + 72px);
-        height: calc(100vh - var(--top-space) - var(--bottom-space) - 84px);
-    }
-
     .panel {
-        padding: 20px;
-        border-radius: 24px;
+        padding: 20px 18px;
     }
 
     .panel-top {
@@ -558,313 +1087,326 @@ a {
         align-items: stretch;
     }
 
-    .home-link {
-        width: 100%;
+    .intro-logo {
+        font-size: clamp(64px, 20vw, 132px);
     }
 
-    .panel-boxes {
-        grid-template-columns: 1fr;
+    .intro-sub {
+        font-size: 22px;
     }
 
-    .nav button:hover,
-    .nav button.active {
+    .intro-hand-wrap {
+        width: 88vw;
+        bottom: -16px;
+    }
+
+    .intro-hand {
+        scale: 0.72;
+    }
+}
+
+@media (max-width: 640px) and (orientation: landscape) {
+    .layout {
+        padding-top: 70px;
+    }
+
+    .sidebar {
+        max-height: calc(100svh - 82px);
+    }
+
+    .logo-inner {
+        min-height: 300px;
+    }
+
+    .intro-hand-wrap {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+
+    .intro {
+        display: none;
+    }
+
+    .site-content {
+        opacity: 1;
         transform: none;
-    }
-}
-
-@media (max-width: 760px) and (orientation: landscape) {
-    .home {
-        padding-top: 92px;
-        padding-bottom: 18px;
-    }
-
-    .hero {
-        gap: 12px;
-    }
-
-    .video-frame {
-        width: min(280px, 52vw);
-    }
-
-    .quote {
-        font-size: clamp(20px, 4vw, 30px);
-    }
-
-    .hero p {
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .panel-wrap {
-        top: calc(var(--top-space) + 64px);
-        height: calc(100vh - var(--top-space) - var(--bottom-space) - 72px);
-    }
-
-    .panel {
-        padding: 18px;
-    }
-}
-
-@media (max-width: 420px) {
-    .menu-toggle {
-        top: 12px;
-        left: 12px;
-    }
-
-    .topbar {
-        top: 12px;
-        right: 12px;
-        max-width: calc(100vw - 24px);
-    }
-
-    .topbar select {
-        min-width: 78px;
-        font-size: 12px;
-    }
-
-    .quote {
-        font-size: clamp(24px, 8vw, 32px);
-    }
-
-    .panel {
-        padding: 18px;
-    }
-
-    .info-box {
-        padding: 16px;
     }
 }
 </style>
 </head>
 <body>
 
-<div class="shell">
-    <div class="overlay" id="overlay" onclick="goHome()"></div>
-
-    <div class="topbar">
-        <label for="languageSwitcher" data-i18n="languageLabel">Sprache</label>
-        <select id="languageSwitcher" onchange="switchLanguage(this.value)">
-            <option value="de">Deutsch</option>
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
-            <option value="it">Italiano</option>
-            <option value="tr">Türkçe</option>
-            <option value="ar">العربية</option>
-            <option value="ru">Русский</option>
-            <option value="nl">Nederlands</option>
-            <option value="pl">Polski</option>
-        </select>
+<div class="intro" id="intro">
+    <div class="intro-inner">
+        <div class="intro-kicker">VELO vinted EST. 2026</div>
+        <h1 class="intro-logo">VELO</h1>
+        <div class="intro-sub">Rare finds. Timeless style.</div>
     </div>
 
-    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" data-i18n="menuButton">Kategorien</button>
+    <div class="intro-hand-wrap" aria-hidden="true">
+        <div class="intro-pull-line"></div>
+        <div class="intro-hand">
+            <div class="thumb"></div>
+            <div class="finger one"></div>
+            <div class="finger two"></div>
+            <div class="finger three"></div>
+            <div class="finger four"></div>
+            <div class="palm"></div>
+        </div>
+        <div class="hand-shadow"></div>
+    </div>
+</div>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span data-i18n="sidebarBadge">VELO Archive</span>
-            <h2 data-i18n="sidebarTitle">Navigation</h2>
+<div class="site-content" id="siteContent">
+    <div class="shell sidebar-collapsed" id="appShell">
+        <div class="grain"></div>
+        <div class="overlay" id="overlay" onclick="handleOverlay()"></div>
+
+        <div class="topbar">
+            <label for="languageSwitcher" data-i18n="languageLabel">Sprache</label>
+            <select id="languageSwitcher" onchange="switchLanguage(this.value)">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+            </select>
         </div>
 
-        <div class="nav">
-            <button data-page="rules" data-i18n="navRules" onclick="openPage('rules')">Rules</button>
-            <button data-page="support" data-i18n="navSupport" onclick="openPage('support')">Support</button>
-            <button data-page="business" data-i18n="navBusiness" onclick="openPage('business')">Business</button>
-            <button data-page="vip" data-i18n="navVip" onclick="openPage('vip')">VIP</button>
-            <button data-page="cooperation" data-i18n="navCooperation" onclick="openPage('cooperation')">Cooperation</button>
-            <button data-page="team" data-i18n="navTeam" onclick="openPage('team')">Team Up</button>
-        </div>
-    </aside>
+        <button class="menu-toggle compact" id="menuToggle" type="button" onclick="toggleSidebar()" aria-label="Kategorien öffnen">
+            <span class="menu-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span class="menu-label" data-i18n="menuButton">Kategorien</span>
+        </button>
 
-    <main class="home" id="home">
-        <section class="hero">
-            <div class="hero-badge" data-i18n="heroBadge">Rare Finds • Timeless Style • Real Community</div>
+        <div class="layout">
+            <aside class="sidebar" id="sidebar" aria-hidden="true">
+                <div class="sidebar-header">
+                    <span data-i18n="sidebarBadge">VELO Archive</span>
+                    <h2 data-i18n="sidebarTitle">Navigation</h2>
+                    <p data-i18n="sidebarText">Wähle eine Kategorie und der Inhalt öffnet sich direkt groß und lesbar auf der rechten Seite.</p>
+                </div>
 
-            <div class="video-frame">
-                <video autoplay muted loop playsinline>
-                    <source src="velo.mp4" type="video/mp4">
-                </video>
+                <div class="nav">
+                    <button data-page="rules" data-i18n="navRules" onclick="openPage('rules')">Rules</button>
+                    <button data-page="support" data-i18n="navSupport" onclick="openPage('support')">Support</button>
+                    <button data-page="business" data-i18n="navBusiness" onclick="openPage('business')">Business</button>
+                    <button data-page="vip" data-i18n="navVip" onclick="openPage('vip')">VIP</button>
+                    <button data-page="cooperation" data-i18n="navCooperation" onclick="openPage('cooperation')">Cooperation</button>
+                    <button data-page="team" data-i18n="navTeam" onclick="openPage('team')">Team Up</button>
+                </div>
+            </aside>
+
+            <div class="stage">
+                <main class="home" id="home">
+                    <section class="hero" data-animate>
+                        <div class="hero-visual" data-parallax data-speed="0.12">
+                            <div class="logo-card" id="logoCard">
+                                <div class="logo-inner">
+                                    <video autoplay muted loop playsinline>
+                                        <source src="velo.mp4" type="video/mp4">
+                                    </video>
+
+                                    <div class="logo-badge">Vintage Select</div>
+
+                                    <div class="logo-text">
+                                        <span class="eyebrow">VELO vinted</span>
+                                        <h1>VELO</h1>
+                                        <p>EST. 2026</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-copy">
+                            <div class="hero-badge" data-i18n="heroBadge">Rare Finds • Timeless Style • Real Community</div>
+                            <div class="quote" data-i18n="heroQuote">Rare finds. Timeless style. Real community.</div>
+                            <p data-i18n="heroText">Eine elegante Landingpage mit Fokus auf dem Video in der Mitte, direktem Discord-Zugang und einer sauberen Kategorie-Ansicht links.</p>
+
+                            <div class="hero-stats">
+                                <div class="stat-card" data-animate style="--delay: 80ms">
+                                    <strong>6</strong>
+                                    <span data-i18n="statOne">kuratierte Bereiche</span>
+                                </div>
+                                <div class="stat-card" data-animate style="--delay: 140ms">
+                                    <strong>24/7</strong>
+                                    <span data-i18n="statTwo">Discord Zugang</span>
+                                </div>
+                                <div class="stat-card" data-animate style="--delay: 200ms">
+                                    <strong>2026</strong>
+                                    <span data-i18n="statThree">EST. Premium Vintage</span>
+                                </div>
+                            </div>
+
+                            <div class="hero-actions">
+                                <a href="https://discord.gg/FCz4RP28" target="_blank" rel="noreferrer" class="primary" data-i18n="discordButton">Discord beitreten</a>
+                                <button type="button" onclick="openSidebar(true)" data-i18n="openCategories">Kategorien öffnen</button>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+
+                <section class="content-stage" id="contentStage">
+                    <div class="panel-wrap">
+                        <article class="panel" id="rules">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="rulesKicker">01 / Rules</div>
+                                    <h2 data-i18n="rulesTitle">Server Rules</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="rulesText">Authentizität ist Pflicht. Keine Reps, keine Fake-Listings, keine versteckten Mängel. Listings müssen ehrlich, sauber und transparent sein. Respekt gegenüber allen Mitgliedern ist Voraussetzung für den Zugang zur Community.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="rulesBox1Title">No Fakes</strong>
+                                    <span data-i18n="rulesBox1Text">Nur originale Artikel. Verstöße führen direkt zum Ausschluss.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="rulesBox2Title">Volle Transparenz</strong>
+                                    <span data-i18n="rulesBox2Text">Zustand, flaws und Gebrauchsspuren immer klar angeben.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 200ms">
+                                    <strong data-i18n="rulesBox3Title">Respekt</strong>
+                                    <span data-i18n="rulesBox3Text">Kein Drama, kein Spam, kein toxisches Verhalten.</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="panel" id="support">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="supportKicker">02 / Support</div>
+                                    <h2 data-i18n="supportTitle">Support & Tickets</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="supportText">Für Hilfe oder Probleme öffnest du einfach ein Ticket auf Discord. So bleibt alles strukturiert und schnell. Wenn du Fragen zu einem Trade, zu Listings oder zur Community hast, ist das der richtige Weg.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="supportBox1Title">Discord</strong>
+                                    <a href="https://discord.gg/FCz4RP28" target="_blank" rel="noreferrer" data-i18n="supportBox1Text">Zum Discord Server</a>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="supportBox2Title">Antwortzeit</strong>
+                                    <span data-i18n="supportBox2Text">Tickets werden priorisiert und sauber bearbeitet.</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="panel" id="business">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="businessKicker">03 / Business</div>
+                                    <h2 data-i18n="businessTitle">Business</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="businessText">Business-Anfragen, Partnerschaften oder professionelle Kooperationen laufen über einen direkten und strukturierten Kanal. So bleibt die Kommunikation klar und effizient.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="businessBox1Title">Für Brands & Seller</strong>
+                                    <span data-i18n="businessBox1Text">Seriöse Zusammenarbeit mit klarem Mehrwert für beide Seiten.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="businessBox2Title">Kontakt</strong>
+                                    <span data-i18n="businessBox2Text">Am besten zuerst über Discord anfragen und das Anliegen kurz erklären.</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="panel" id="vip">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="vipKicker">04 / VIP</div>
+                                    <h2 data-i18n="vipTitle">VIP Access</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="vipText">VIP wird über Server Boosting oder besondere Community-Aktivität freigeschaltet. Mitglieder erhalten mehr Sichtbarkeit, exklusive Vorteile und priorisierte Präsenz.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="vipBox1Title">Mehr Reichweite</strong>
+                                    <span data-i18n="vipBox1Text">Deine Listings und Angebote bekommen stärkere Sichtbarkeit.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="vipBox2Title">Exklusive Vorteile</strong>
+                                    <span data-i18n="vipBox2Text">Zugang zu speziellen Bereichen und besonderen Deals.</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="panel" id="cooperation">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="cooperationKicker">05 / Cooperation</div>
+                                    <h2 data-i18n="cooperationTitle">Cooperation</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="cooperationText">Für Kooperationen brauchen wir direkt die wichtigsten Infos: Link, Stats, Konzept und deinen konkreten Vorschlag. Dadurch kann schneller entschieden werden, ob die Zusammenarbeit passt.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="cooperationBox1Title">Benötigt</strong>
+                                    <span data-i18n="cooperationBox1Text">Link, Stats, Konzept, Proposal.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="cooperationBox2Title">Ziel</strong>
+                                    <span data-i18n="cooperationBox2Text">Kooperationen mit klarer Qualität und passender Ästhetik.</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="panel" id="team">
+                            <div class="panel-top">
+                                <div>
+                                    <div class="panel-kicker" data-i18n="teamKicker">06 / Team Up</div>
+                                    <h2 data-i18n="teamTitle">Team Up</h2>
+                                </div>
+                                <button class="home-link" type="button" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
+                            </div>
+
+                            <p data-i18n="teamText">Hier connecten sich Member für Projekte, Trades, Content oder neue Ideen. Wenn du Leute mit ähnlichem Geschmack oder ähnlichen Zielen suchst, bist du hier richtig.</p>
+
+                            <div class="panel-boxes">
+                                <div class="info-box" data-animate style="--delay: 80ms">
+                                    <strong data-i18n="teamBox1Title">Networking</strong>
+                                    <span data-i18n="teamBox1Text">Finde passende Kontakte für kreative oder kommerzielle Vorhaben.</span>
+                                </div>
+                                <div class="info-box" data-animate style="--delay: 140ms">
+                                    <strong data-i18n="teamBox2Title">Community</strong>
+                                    <span data-i18n="teamBox2Text">Nicht nur Market, sondern echte Zusammenarbeit.</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
             </div>
-
-            <div class="quote" data-i18n="heroQuote">Rare finds. Timeless style. Real community.</div>
-
-            <p data-i18n="heroText">
-                Eine elegante Landingpage mit Fokus auf dem Video in der Mitte,
-                direktem Discord-Zugang und einer sauberen Kategorie-Ansicht links.
-            </p>
-
-            <div class="hero-actions">
-                <a href="https://discord.gg/FCz4RP28" target="_blank" class="primary" data-i18n="discordButton">Discord beitreten</a>
-                <button type="button" onclick="openSidebarAndFirst()" data-i18n="openCategories">Kategorien öffnen</button>
-            </div>
-        </section>
-    </main>
-
-    <section class="content-stage" id="contentStage">
-        <div class="panel-wrap">
-            <article class="panel" id="rules">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="rulesKicker">01 / Rules</div>
-                        <h2 data-i18n="rulesTitle">Server Rules</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="rulesText">
-                    Authentizität ist Pflicht. Keine Reps, keine Fake-Listings, keine versteckten Mängel.
-                    Listings müssen ehrlich, sauber und transparent sein. Respekt gegenüber allen Mitgliedern
-                    ist Voraussetzung für den Zugang zur Community.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="rulesBox1Title">No Fakes</strong>
-                        <span data-i18n="rulesBox1Text">Nur originale Artikel. Verstöße führen direkt zum Ausschluss.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="rulesBox2Title">Volle Transparenz</strong>
-                        <span data-i18n="rulesBox2Text">Zustand, flaws und Gebrauchsspuren immer klar angeben.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="rulesBox3Title">Respekt</strong>
-                        <span data-i18n="rulesBox3Text">Kein Drama, kein Spam, kein toxisches Verhalten.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel" id="support">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="supportKicker">02 / Support</div>
-                        <h2 data-i18n="supportTitle">Support & Tickets</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="supportText">
-                    Für Hilfe oder Probleme öffnest du einfach ein Ticket auf Discord.
-                    So bleibt alles strukturiert und schnell. Wenn du Fragen zu einem Trade,
-                    zu Listings oder zur Community hast, ist das der richtige Weg.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="supportBox1Title">Discord</strong>
-                        <a href="https://discord.gg/FCz4RP28" target="_blank" data-i18n="supportBox1Text">Zum Discord Server</a>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="supportBox2Title">Antwortzeit</strong>
-                        <span data-i18n="supportBox2Text">Tickets werden priorisiert und sauber bearbeitet.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel" id="business">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="businessKicker">03 / Business</div>
-                        <h2 data-i18n="businessTitle">Business</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="businessText">
-                    Business-Anfragen, Partnerschaften oder professionelle Kooperationen laufen über einen
-                    direkten und strukturierten Kanal. So bleibt die Kommunikation klar und effizient.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="businessBox1Title">Für Brands & Seller</strong>
-                        <span data-i18n="businessBox1Text">Seriöse Zusammenarbeit mit klarem Mehrwert für beide Seiten.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="businessBox2Title">Kontakt</strong>
-                        <span data-i18n="businessBox2Text">Am besten zuerst über Discord anfragen und das Anliegen kurz erklären.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel" id="vip">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="vipKicker">04 / VIP</div>
-                        <h2 data-i18n="vipTitle">VIP Access</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="vipText">
-                    VIP wird über Server Boosting oder besondere Community-Aktivität freigeschaltet.
-                    Mitglieder erhalten mehr Sichtbarkeit, exklusive Vorteile und priorisierte Präsenz.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="vipBox1Title">Mehr Reichweite</strong>
-                        <span data-i18n="vipBox1Text">Deine Listings und Angebote bekommen stärkere Sichtbarkeit.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="vipBox2Title">Exklusive Vorteile</strong>
-                        <span data-i18n="vipBox2Text">Zugang zu speziellen Bereichen und besonderen Deals.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel" id="cooperation">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="cooperationKicker">05 / Cooperation</div>
-                        <h2 data-i18n="cooperationTitle">Cooperation</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="cooperationText">
-                    Für Kooperationen brauchen wir direkt die wichtigsten Infos:
-                    Link, Stats, Konzept und deinen konkreten Vorschlag. Dadurch kann schneller
-                    entschieden werden, ob die Zusammenarbeit passt.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="cooperationBox1Title">Benötigt</strong>
-                        <span data-i18n="cooperationBox1Text">Link, Stats, Konzept, Proposal.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="cooperationBox2Title">Ziel</strong>
-                        <span data-i18n="cooperationBox2Text">Kooperationen mit klarer Qualität und passender Ästhetik.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel" id="team">
-                <div class="panel-top">
-                    <div>
-                        <div class="panel-kicker" data-i18n="teamKicker">06 / Team Up</div>
-                        <h2 data-i18n="teamTitle">Team Up</h2>
-                    </div>
-                    <button class="home-link" onclick="goHome()" data-i18n="backHome">Zur Startseite</button>
-                </div>
-
-                <p data-i18n="teamText">
-                    Hier connecten sich Member für Projekte, Trades, Content oder neue Ideen.
-                    Wenn du Leute mit ähnlichem Geschmack oder ähnlichen Zielen suchst, bist du hier richtig.
-                </p>
-
-                <div class="panel-boxes">
-                    <div class="info-box">
-                        <strong data-i18n="teamBox1Title">Networking</strong>
-                        <span data-i18n="teamBox1Text">Finde passende Kontakte für kreative oder kommerzielle Vorhaben.</span>
-                    </div>
-                    <div class="info-box">
-                        <strong data-i18n="teamBox2Title">Community</strong>
-                        <span data-i18n="teamBox2Text">Nicht nur Market, sondern echte Zusammenarbeit.</span>
-                    </div>
-                </div>
-            </article>
         </div>
-    </section>
+    </div>
 </div>
 
 <script>
@@ -874,6 +1416,7 @@ const translations = {
         menuButton: "Kategorien",
         sidebarBadge: "VELO Archive",
         sidebarTitle: "Navigation",
+        sidebarText: "Wähle eine Kategorie und der Inhalt öffnet sich direkt groß und lesbar auf der rechten Seite.",
         navRules: "Rules",
         navSupport: "Support",
         navBusiness: "Business",
@@ -883,6 +1426,9 @@ const translations = {
         heroBadge: "Rare Finds • Timeless Style • Real Community",
         heroQuote: "Rare finds. Timeless style. Real community.",
         heroText: "Eine elegante Landingpage mit Fokus auf dem Video in der Mitte, direktem Discord-Zugang und einer sauberen Kategorie-Ansicht links.",
+        statOne: "kuratierte Bereiche",
+        statTwo: "Discord Zugang",
+        statThree: "EST. Premium Vintage",
         discordButton: "Discord beitreten",
         openCategories: "Kategorien öffnen",
         backHome: "Zur Startseite",
@@ -936,6 +1482,7 @@ const translations = {
         menuButton: "Categories",
         sidebarBadge: "VELO Archive",
         sidebarTitle: "Navigation",
+        sidebarText: "Pick a category and the content opens large, sharp and readable on the right side.",
         navRules: "Rules",
         navSupport: "Support",
         navBusiness: "Business",
@@ -945,6 +1492,9 @@ const translations = {
         heroBadge: "Rare Finds • Timeless Style • Real Community",
         heroQuote: "Rare finds. Timeless style. Real community.",
         heroText: "An elegant landing page focused on the centered video, direct Discord access and a clean category view on the left.",
+        statOne: "curated sections",
+        statTwo: "Discord access",
+        statThree: "EST. premium vintage",
         discordButton: "Join Discord",
         openCategories: "Open Categories",
         backHome: "Back to Home",
@@ -992,523 +1542,47 @@ const translations = {
         teamBox1Text: "Find the right contacts for creative or commercial projects.",
         teamBox2Title: "Community",
         teamBox2Text: "Not just a market, but real collaboration."
-    },
-    fr: {
-        languageLabel: "Langue",
-        menuButton: "Catégories",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Navigation",
-        navRules: "Règles",
-        navSupport: "Support",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Coopération",
-        navTeam: "Team Up",
-        heroBadge: "Trouvailles rares • Style intemporel • Vraie communauté",
-        heroQuote: "Trouvailles rares. Style intemporel. Vraie communauté.",
-        heroText: "Une landing page élégante centrée sur la vidéo, avec accès direct à Discord et une vue propre des catégories à gauche.",
-        discordButton: "Rejoindre Discord",
-        openCategories: "Ouvrir les catégories",
-        backHome: "Retour à l'accueil",
-        rulesKicker: "01 / Règles",
-        rulesTitle: "Règles du serveur",
-        rulesText: "L'authenticité est obligatoire. Aucun faux, aucune fausse annonce ni défaut caché. Les annonces doivent être honnêtes, claires et transparentes. Le respect de tous les membres est indispensable.",
-        rulesBox1Title: "Aucun faux",
-        rulesBox1Text: "Articles originaux uniquement. Toute violation entraîne une exclusion immédiate.",
-        rulesBox2Title: "Transparence totale",
-        rulesBox2Text: "Indique toujours clairement l'état, les défauts et les traces d'usure.",
-        rulesBox3Title: "Respect",
-        rulesBox3Text: "Pas de drama, pas de spam, pas de comportement toxique.",
-        supportKicker: "02 / Support",
-        supportTitle: "Support & Tickets",
-        supportText: "Pour toute aide ou problème, ouvre simplement un ticket sur Discord. Cela garde tout structuré et rapide. Pour les questions sur un trade, une annonce ou la communauté, c'est le bon endroit.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Aller au serveur Discord",
-        supportBox2Title: "Temps de réponse",
-        supportBox2Text: "Les tickets sont priorisés et traités correctement.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Les demandes business, partenariats et collaborations professionnelles passent par un canal direct et structuré pour garder une communication claire et efficace.",
-        businessBox1Title: "Pour marques & vendeurs",
-        businessBox1Text: "Une collaboration sérieuse avec une vraie valeur pour les deux côtés.",
-        businessBox2Title: "Contact",
-        businessBox2Text: "Le mieux est de nous contacter d'abord via Discord et d'expliquer brièvement votre demande.",
-        vipKicker: "04 / VIP",
-        vipTitle: "Accès VIP",
-        vipText: "Le VIP se débloque via le boost du serveur ou une activité spéciale dans la communauté. Les membres bénéficient de plus de visibilité, d'avantages exclusifs et d'une présence prioritaire.",
-        vipBox1Title: "Plus de portée",
-        vipBox1Text: "Tes annonces et offres gagnent en visibilité.",
-        vipBox2Title: "Avantages exclusifs",
-        vipBox2Text: "Accès à des sections spéciales et à des offres sélectionnées.",
-        cooperationKicker: "05 / Coopération",
-        cooperationTitle: "Coopération",
-        cooperationText: "Pour une collaboration, nous avons besoin immédiatement des infos clés : lien, statistiques, concept et proposition concrète. Cela permet de décider plus vite si cela correspond.",
-        cooperationBox1Title: "Requis",
-        cooperationBox1Text: "Lien, statistiques, concept, proposition.",
-        cooperationBox2Title: "Objectif",
-        cooperationBox2Text: "Des collaborations avec une qualité claire et une esthétique cohérente.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Ici, les membres se connectent pour des projets, des trades, du contenu ou de nouvelles idées. Si tu cherches des personnes avec les mêmes goûts ou objectifs, tu es au bon endroit.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Trouve les bons contacts pour des projets créatifs ou commerciaux.",
-        teamBox2Title: "Communauté",
-        teamBox2Text: "Pas seulement un marché, mais une vraie collaboration."
-    },
-    es: {
-        languageLabel: "Idioma",
-        menuButton: "Categorías",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Navegación",
-        navRules: "Reglas",
-        navSupport: "Soporte",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Cooperación",
-        navTeam: "Team Up",
-        heroBadge: "Hallazgos raros • Estilo atemporal • Comunidad real",
-        heroQuote: "Hallazgos raros. Estilo atemporal. Comunidad real.",
-        heroText: "Una landing page elegante centrada en el video, con acceso directo a Discord y una vista limpia de categorías a la izquierda.",
-        discordButton: "Unirse a Discord",
-        openCategories: "Abrir categorías",
-        backHome: "Volver al inicio",
-        rulesKicker: "01 / Reglas",
-        rulesTitle: "Reglas del servidor",
-        rulesText: "La autenticidad es obligatoria. No se permiten réplicas, anuncios falsos ni defectos ocultos. Los anuncios deben ser honestos, limpios y transparentes. El respeto por todos los miembros es imprescindible.",
-        rulesBox1Title: "Sin falsificaciones",
-        rulesBox1Text: "Solo artículos originales. Las infracciones llevan a expulsión inmediata.",
-        rulesBox2Title: "Transparencia total",
-        rulesBox2Text: "Muestra siempre claramente el estado, los defectos y el desgaste.",
-        rulesBox3Title: "Respeto",
-        rulesBox3Text: "Sin drama, sin spam y sin comportamiento tóxico.",
-        supportKicker: "02 / Soporte",
-        supportTitle: "Soporte y tickets",
-        supportText: "Si necesitas ayuda o tienes problemas, abre un ticket en Discord. Así todo se mantiene estructurado y rápido. Si tienes preguntas sobre un trade, anuncios o la comunidad, este es el lugar correcto.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Ir al servidor de Discord",
-        supportBox2Title: "Tiempo de respuesta",
-        supportBox2Text: "Los tickets se priorizan y se gestionan correctamente.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Las solicitudes comerciales, asociaciones y colaboraciones profesionales se gestionan a través de un canal directo y estructurado para mantener una comunicación clara y eficiente.",
-        businessBox1Title: "Para marcas y vendedores",
-        businessBox1Text: "Colaboración seria con valor claro para ambas partes.",
-        businessBox2Title: "Contacto",
-        businessBox2Text: "Lo mejor es contactarnos primero por Discord y explicar brevemente tu solicitud.",
-        vipKicker: "04 / VIP",
-        vipTitle: "Acceso VIP",
-        vipText: "El VIP se desbloquea mediante boosts al servidor o actividad especial dentro de la comunidad. Los miembros reciben más visibilidad, beneficios exclusivos y presencia prioritaria.",
-        vipBox1Title: "Más alcance",
-        vipBox1Text: "Tus anuncios y ofertas ganan más visibilidad.",
-        vipBox2Title: "Beneficios exclusivos",
-        vipBox2Text: "Acceso a secciones especiales y ofertas seleccionadas.",
-        cooperationKicker: "05 / Cooperación",
-        cooperationTitle: "Cooperación",
-        cooperationText: "Para una cooperación necesitamos de inmediato los datos clave: enlace, estadísticas, concepto y tu propuesta concreta. Así podemos decidir más rápido si encaja.",
-        cooperationBox1Title: "Necesario",
-        cooperationBox1Text: "Enlace, estadísticas, concepto, propuesta.",
-        cooperationBox2Title: "Objetivo",
-        cooperationBox2Text: "Colaboraciones con calidad clara y estética adecuada.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Aquí los miembros se conectan para proyectos, trades, contenido o nuevas ideas. Si buscas personas con gustos o metas similares, este es tu lugar.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Encuentra los contactos adecuados para proyectos creativos o comerciales.",
-        teamBox2Title: "Community",
-        teamBox2Text: "No solo un mercado, sino colaboración real."
-    },
-    it: {
-        languageLabel: "Lingua",
-        menuButton: "Categorie",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Navigazione",
-        navRules: "Regole",
-        navSupport: "Supporto",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Cooperazione",
-        navTeam: "Team Up",
-        heroBadge: "Scoperte rare • Stile senza tempo • Vera community",
-        heroQuote: "Scoperte rare. Stile senza tempo. Vera community.",
-        heroText: "Una landing page elegante con focus sul video centrale, accesso diretto a Discord e una vista pulita delle categorie a sinistra.",
-        discordButton: "Entra su Discord",
-        openCategories: "Apri categorie",
-        backHome: "Torna alla home",
-        rulesKicker: "01 / Regole",
-        rulesTitle: "Regole del server",
-        rulesText: "L'autenticità è obbligatoria. Niente repliche, annunci falsi o difetti nascosti. Gli annunci devono essere onesti, puliti e trasparenti. Il rispetto per tutti i membri è fondamentale.",
-        rulesBox1Title: "Niente falsi",
-        rulesBox1Text: "Solo articoli originali. Le violazioni comportano rimozione immediata.",
-        rulesBox2Title: "Trasparenza totale",
-        rulesBox2Text: "Mostra sempre chiaramente condizioni, difetti e segni d'usura.",
-        rulesBox3Title: "Rispetto",
-        rulesBox3Text: "Niente drama, niente spam e nessun comportamento tossico.",
-        supportKicker: "02 / Supporto",
-        supportTitle: "Supporto e ticket",
-        supportText: "Per aiuto o problemi, apri semplicemente un ticket su Discord. Così tutto resta ordinato e veloce. Se hai domande su trade, annunci o community, questo è il posto giusto.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Vai al server Discord",
-        supportBox2Title: "Tempo di risposta",
-        supportBox2Text: "I ticket vengono prioritizzati e gestiti correttamente.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Richieste business, partnership e collaborazioni professionali passano attraverso un canale diretto e strutturato per mantenere la comunicazione chiara ed efficiente.",
-        businessBox1Title: "Per brand e seller",
-        businessBox1Text: "Collaborazione seria con valore chiaro per entrambe le parti.",
-        businessBox2Title: "Contatto",
-        businessBox2Text: "Il modo migliore è contattarci prima su Discord e spiegare brevemente la richiesta.",
-        vipKicker: "04 / VIP",
-        vipTitle: "Accesso VIP",
-        vipText: "Il VIP si sblocca tramite server boosting o attività speciale nella community. I membri ottengono maggiore visibilità, vantaggi esclusivi e presenza prioritaria.",
-        vipBox1Title: "Più visibilità",
-        vipBox1Text: "I tuoi annunci e offerte ottengono maggiore esposizione.",
-        vipBox2Title: "Vantaggi esclusivi",
-        vipBox2Text: "Accesso a sezioni speciali e offerte selezionate.",
-        cooperationKicker: "05 / Cooperazione",
-        cooperationTitle: "Cooperazione",
-        cooperationText: "Per una cooperazione ci servono subito i dettagli principali: link, statistiche, concept e proposta concreta. Questo ci aiuta a decidere più velocemente se è adatta.",
-        cooperationBox1Title: "Richiesto",
-        cooperationBox1Text: "Link, statistiche, concept, proposta.",
-        cooperationBox2Title: "Obiettivo",
-        cooperationBox2Text: "Collaborazioni con qualità chiara ed estetica coerente.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Qui i membri si connettono per progetti, trade, contenuti o nuove idee. Se cerchi persone con gusto o obiettivi simili, sei nel posto giusto.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Trova i contatti giusti per progetti creativi o commerciali.",
-        teamBox2Title: "Community",
-        teamBox2Text: "Non solo un market, ma vera collaborazione."
-    },
-    tr: {
-        languageLabel: "Dil",
-        menuButton: "Kategoriler",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Navigasyon",
-        navRules: "Kurallar",
-        navSupport: "Destek",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Is Birligi",
-        navTeam: "Team Up",
-        heroBadge: "Nadir Parcalar • Zamansiz Stil • Gercek Topluluk",
-        heroQuote: "Nadir parcalar. Zamansiz stil. Gercek topluluk.",
-        heroText: "Ortadaki videoya odaklanan, dogrudan Discord erisimi ve solda temiz kategori gorunumu olan sik bir landing page.",
-        discordButton: "Discord'a Katil",
-        openCategories: "Kategorileri Ac",
-        backHome: "Ana Sayfaya Don",
-        rulesKicker: "01 / Kurallar",
-        rulesTitle: "Sunucu Kurallari",
-        rulesText: "Orijinallik zorunludur. Replika, sahte ilan veya gizli kusur kabul edilmez. Ilanlar durust, temiz ve seffaf olmalidir. Tum uyelere saygi gostermek sarttir.",
-        rulesBox1Title: "Sahte Yok",
-        rulesBox1Text: "Sadece orijinal urunler. Ihlaller dogrudan kaldirilmaya yol acar.",
-        rulesBox2Title: "Tam Seffaflik",
-        rulesBox2Text: "Durum, kusurlar ve kullanim izleri her zaman acikca belirtilmelidir.",
-        rulesBox3Title: "Saygi",
-        rulesBox3Text: "Drama yok, spam yok, toksik davranis yok.",
-        supportKicker: "02 / Destek",
-        supportTitle: "Destek ve Ticket",
-        supportText: "Yardim veya sorunlar icin Discord'da ticket acman yeterli. Boylece her sey duzenli ve hizli kalir. Trade, ilanlar veya topluluk hakkinda sorularin varsa dogru yer burasi.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Discord sunucusuna git",
-        supportBox2Title: "Yanit suresi",
-        supportBox2Text: "Ticket'lar onceliklendirilir ve duzgun sekilde islenir.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Business talepleri, ortakliklar ve profesyonel is birlikleri iletisimi net ve verimli tutmak icin dogrudan ve duzenli bir kanal uzerinden yurutulur.",
-        businessBox1Title: "Markalar ve saticilar icin",
-        businessBox1Text: "Her iki taraf icin de net deger saglayan ciddi is birligi.",
-        businessBox2Title: "Iletisim",
-        businessBox2Text: "En iyi yol once Discord uzerinden ulasip istegini kisaca anlatmaktir.",
-        vipKicker: "04 / VIP",
-        vipTitle: "VIP Erisim",
-        vipText: "VIP, sunucu boost veya ozel topluluk aktivitesi ile acilir. Uyeler daha fazla gorunurluk, ozel avantajlar ve oncelikli konum kazanir.",
-        vipBox1Title: "Daha Fazla Gorunurluk",
-        vipBox1Text: "Ilanlarin ve tekliflerin daha guclu gorunurluk kazanir.",
-        vipBox2Title: "Ozel Avantajlar",
-        vipBox2Text: "Ozel bolumlere ve secili firsatlara erisim.",
-        cooperationKicker: "05 / Is Birligi",
-        cooperationTitle: "Cooperation",
-        cooperationText: "Is birligi icin ana detaylara hemen ihtiyacimiz var: link, istatistikler, konsept ve net teklifin. Bu sayede uyup uymadigini daha hizli degerlendirebiliriz.",
-        cooperationBox1Title: "Gerekli",
-        cooperationBox1Text: "Link, istatistikler, konsept, teklif.",
-        cooperationBox2Title: "Amac",
-        cooperationBox2Text: "Net kaliteye ve uygun estetige sahip is birlikleri.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Burada uyeler projeler, trade, icerik veya yeni fikirler icin bag kurar. Benzer zevke veya hedeflere sahip insanlari ariyorsan dogru yerdesin.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Yaratici veya ticari projeler icin dogru baglantilari bul.",
-        teamBox2Title: "Topluluk",
-        teamBox2Text: "Sadece market degil, gercek is birligi."
-    },
-    ar: {
-        languageLabel: "اللغة",
-        menuButton: "الفئات",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "التنقل",
-        navRules: "القواعد",
-        navSupport: "الدعم",
-        navBusiness: "الأعمال",
-        navVip: "VIP",
-        navCooperation: "التعاون",
-        navTeam: "Team Up",
-        heroBadge: "قطع نادرة • اسلوب خالد • مجتمع حقيقي",
-        heroQuote: "قطع نادرة. اسلوب خالد. مجتمع حقيقي.",
-        heroText: "صفحة هبوط انيقة تركز على الفيديو في الوسط مع وصول مباشر الى ديسكورد وعرض فئات نظيف على اليسار.",
-        discordButton: "الانضمام الى ديسكورد",
-        openCategories: "فتح الفئات",
-        backHome: "العودة الى الرئيسية",
-        rulesKicker: "01 / القواعد",
-        rulesTitle: "قواعد السيرفر",
-        rulesText: "الاصالة الزامية. لا نسخ مقلدة ولا اعلانات مزيفة ولا عيوب مخفية. يجب ان تكون الاعلانات صادقة وواضحة وشفافة. احترام جميع الاعضاء شرط اساسي.",
-        rulesBox1Title: "ممنوع التقليد",
-        rulesBox1Text: "المنتجات الاصلية فقط. المخالفات تؤدي الى الازالة الفورية.",
-        rulesBox2Title: "شفافية كاملة",
-        rulesBox2Text: "يجب توضيح الحالة والعيوب واثار الاستخدام بشكل كامل.",
-        rulesBox3Title: "الاحترام",
-        rulesBox3Text: "لا دراما ولا سبام ولا سلوك سام.",
-        supportKicker: "02 / الدعم",
-        supportTitle: "الدعم والتذاكر",
-        supportText: "للمساعدة او عند وجود مشكلة، افتح تذكرة على ديسكورد. بهذه الطريقة يبقى كل شيء منظما وسريعا. اذا كانت لديك اسئلة حول صفقة او الاعلانات او المجتمع فهذا هو المكان الصحيح.",
-        supportBox1Title: "ديسكورد",
-        supportBox1Text: "الذهاب الى سيرفر ديسكورد",
-        supportBox2Title: "وقت الرد",
-        supportBox2Text: "يتم اعطاء الاولوية للتذاكر ومعالجتها بشكل صحيح.",
-        businessKicker: "03 / الاعمال",
-        businessTitle: "الاعمال",
-        businessText: "تتم طلبات الاعمال والشراكات والتعاون المهني عبر قناة مباشرة ومنظمة للحفاظ على وضوح وكفاءة التواصل.",
-        businessBox1Title: "للعلامات والبائعين",
-        businessBox1Text: "تعاون جاد بقيمة واضحة للطرفين.",
-        businessBox2Title: "التواصل",
-        businessBox2Text: "افضل طريقة هي التواصل اولا عبر ديسكورد وشرح الطلب باختصار.",
-        vipKicker: "04 / VIP",
-        vipTitle: "دخول VIP",
-        vipText: "يتم فتح VIP عبر دعم السيرفر او النشاط المميز داخل المجتمع. يحصل الاعضاء على ظهور اكبر ومزايا حصرية واولوية اعلى.",
-        vipBox1Title: "وصول اكبر",
-        vipBox1Text: "تحصل اعلاناتك وعروضك على ظهور اقوى.",
-        vipBox2Title: "مزايا حصرية",
-        vipBox2Text: "الوصول الى اقسام خاصة وعروض مختارة.",
-        cooperationKicker: "05 / التعاون",
-        cooperationTitle: "التعاون",
-        cooperationText: "للتعاون نحتاج مباشرة الى التفاصيل الاساسية: الرابط، الاحصائيات، الفكرة، والاقتراح الواضح. هذا يساعدنا على اتخاذ القرار بسرعة اكبر.",
-        cooperationBox1Title: "مطلوب",
-        cooperationBox1Text: "الرابط، الاحصائيات، الفكرة، الاقتراح.",
-        cooperationBox2Title: "الهدف",
-        cooperationBox2Text: "تعاون بجودة واضحة وهوية جمالية مناسبة.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "هنا يتواصل الاعضاء من اجل المشاريع او الصفقات او المحتوى او الافكار الجديدة. اذا كنت تبحث عن اشخاص لهم نفس الذوق او الاهداف فانت في المكان المناسب.",
-        teamBox1Title: "التواصل",
-        teamBox1Text: "اعثر على الاشخاص المناسبين للمشاريع الابداعية او التجارية.",
-        teamBox2Title: "المجتمع",
-        teamBox2Text: "ليس مجرد سوق بل تعاون حقيقي."
-    },
-    ru: {
-        languageLabel: "Язык",
-        menuButton: "Категории",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Навигация",
-        navRules: "Правила",
-        navSupport: "Поддержка",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Сотрудничество",
-        navTeam: "Team Up",
-        heroBadge: "Редкие находки • Вневременной стиль • Настоящее сообщество",
-        heroQuote: "Редкие находки. Вневременной стиль. Настоящее сообщество.",
-        heroText: "Элегантная landing page с видео по центру, прямым доступом к Discord и аккуратным списком категорий слева.",
-        discordButton: "Присоединиться к Discord",
-        openCategories: "Открыть категории",
-        backHome: "Назад на главную",
-        rulesKicker: "01 / Правила",
-        rulesTitle: "Правила сервера",
-        rulesText: "Подлинность обязательна. Никаких реплик, фейковых объявлений и скрытых дефектов. Объявления должны быть честными, аккуратными и прозрачными. Уважение ко всем участникам обязательно.",
-        rulesBox1Title: "Без подделок",
-        rulesBox1Text: "Только оригинальные вещи. Нарушения ведут к немедленному удалению.",
-        rulesBox2Title: "Полная прозрачность",
-        rulesBox2Text: "Всегда чётко указывайте состояние, дефекты и следы носки.",
-        rulesBox3Title: "Уважение",
-        rulesBox3Text: "Без драмы, спама и токсичного поведения.",
-        supportKicker: "02 / Поддержка",
-        supportTitle: "Поддержка и тикеты",
-        supportText: "Если нужна помощь или возникли проблемы, просто откройте тикет в Discord. Это помогает держать всё структурированным и быстрым. Если у вас есть вопросы по сделке, объявлениям или сообществу, это правильное место.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Перейти на Discord сервер",
-        supportBox2Title: "Время ответа",
-        supportBox2Text: "Тикеты обрабатываются в приоритетном порядке.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Бизнес-запросы, партнёрства и профессиональные коллаборации проходят через прямой и структурированный канал, чтобы общение оставалось понятным и эффективным.",
-        businessBox1Title: "Для брендов и продавцов",
-        businessBox1Text: "Серьёзное сотрудничество с явной выгодой для обеих сторон.",
-        businessBox2Title: "Контакт",
-        businessBox2Text: "Лучше всего сначала написать через Discord и кратко описать запрос.",
-        vipKicker: "04 / VIP",
-        vipTitle: "VIP доступ",
-        vipText: "VIP открывается через буст сервера или особую активность в сообществе. Участники получают больше видимости, эксклюзивные преимущества и приоритетное присутствие.",
-        vipBox1Title: "Больше охвата",
-        vipBox1Text: "Ваши объявления и предложения получают больше внимания.",
-        vipBox2Title: "Эксклюзивные преимущества",
-        vipBox2Text: "Доступ к специальным разделам и отдельным предложениям.",
-        cooperationKicker: "05 / Сотрудничество",
-        cooperationTitle: "Сотрудничество",
-        cooperationText: "Для сотрудничества нам сразу нужны ключевые детали: ссылка, статистика, концепт и конкретное предложение. Это помогает быстрее понять, подходит ли формат.",
-        cooperationBox1Title: "Нужно",
-        cooperationBox1Text: "Ссылка, статистика, концепт, предложение.",
-        cooperationBox2Title: "Цель",
-        cooperationBox2Text: "Сотрудничество с понятным качеством и подходящей эстетикой.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Здесь участники находят друг друга для проектов, сделок, контента или новых идей. Если вы ищете людей с похожим вкусом или целями, вы в правильном месте.",
-        teamBox1Title: "Нетворкинг",
-        teamBox1Text: "Найдите подходящие контакты для творческих или коммерческих проектов.",
-        teamBox2Title: "Сообщество",
-        teamBox2Text: "Не просто маркет, а настоящее сотрудничество."
-    },
-    nl: {
-        languageLabel: "Taal",
-        menuButton: "Categorieen",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Navigatie",
-        navRules: "Regels",
-        navSupport: "Support",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Samenwerking",
-        navTeam: "Team Up",
-        heroBadge: "Zeldzame vondsten • Tijdloze stijl • Echte community",
-        heroQuote: "Zeldzame vondsten. Tijdloze stijl. Echte community.",
-        heroText: "Een elegante landing page met focus op de video in het midden, directe Discord-toegang en een nette categorie-weergave links.",
-        discordButton: "Word lid van Discord",
-        openCategories: "Categorieen openen",
-        backHome: "Terug naar home",
-        rulesKicker: "01 / Regels",
-        rulesTitle: "Serverregels",
-        rulesText: "Authenticiteit is verplicht. Geen replica's, geen nepvermeldingen en geen verborgen gebreken. Vermeldingen moeten eerlijk, duidelijk en transparant zijn. Respect voor alle leden is vereist.",
-        rulesBox1Title: "Geen fakes",
-        rulesBox1Text: "Alleen originele items. Overtredingen leiden tot directe verwijdering.",
-        rulesBox2Title: "Volledige transparantie",
-        rulesBox2Text: "Toon altijd duidelijk de staat, gebreken en gebruikssporen.",
-        rulesBox3Title: "Respect",
-        rulesBox3Text: "Geen drama, geen spam en geen toxisch gedrag.",
-        supportKicker: "02 / Support",
-        supportTitle: "Support & Tickets",
-        supportText: "Voor hulp of problemen open je gewoon een ticket op Discord. Zo blijft alles gestructureerd en snel. Als je vragen hebt over een trade, listings of de community, dan ben je hier op de juiste plek.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Ga naar de Discord-server",
-        supportBox2Title: "Reactietijd",
-        supportBox2Text: "Tickets krijgen prioriteit en worden netjes afgehandeld.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Business-aanvragen, partnerships en professionele samenwerkingen verlopen via een direct en gestructureerd kanaal zodat communicatie duidelijk en efficient blijft.",
-        businessBox1Title: "Voor merken & verkopers",
-        businessBox1Text: "Serieuze samenwerking met duidelijke waarde voor beide kanten.",
-        businessBox2Title: "Contact",
-        businessBox2Text: "Neem het beste eerst contact op via Discord en leg je aanvraag kort uit.",
-        vipKicker: "04 / VIP",
-        vipTitle: "VIP-toegang",
-        vipText: "VIP wordt vrijgeschakeld via server boosting of speciale community-activiteit. Leden krijgen meer zichtbaarheid, exclusieve voordelen en prioritaire aanwezigheid.",
-        vipBox1Title: "Meer bereik",
-        vipBox1Text: "Je listings en aanbiedingen krijgen sterkere zichtbaarheid.",
-        vipBox2Title: "Exclusieve voordelen",
-        vipBox2Text: "Toegang tot speciale secties en geselecteerde deals.",
-        cooperationKicker: "05 / Samenwerking",
-        cooperationTitle: "Samenwerking",
-        cooperationText: "Voor samenwerking hebben we meteen de belangrijkste details nodig: link, statistieken, concept en je concrete voorstel. Zo kunnen we sneller bepalen of het past.",
-        cooperationBox1Title: "Vereist",
-        cooperationBox1Text: "Link, statistieken, concept, voorstel.",
-        cooperationBox2Title: "Doel",
-        cooperationBox2Text: "Samenwerkingen met duidelijke kwaliteit en passende esthetiek.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Hier vinden leden elkaar voor projecten, trades, content of nieuwe ideeen. Als je mensen zoekt met een vergelijkbare smaak of doelen, zit je hier goed.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Vind de juiste contacten voor creatieve of commerciele projecten.",
-        teamBox2Title: "Community",
-        teamBox2Text: "Niet alleen een market, maar echte samenwerking."
-    },
-    pl: {
-        languageLabel: "Jezyk",
-        menuButton: "Kategorie",
-        sidebarBadge: "VELO Archive",
-        sidebarTitle: "Nawigacja",
-        navRules: "Zasady",
-        navSupport: "Wsparcie",
-        navBusiness: "Business",
-        navVip: "VIP",
-        navCooperation: "Wspolpraca",
-        navTeam: "Team Up",
-        heroBadge: "Rzadkie znaleziska • Ponadczasowy styl • Prawdziwa spolecznosc",
-        heroQuote: "Rzadkie znaleziska. Ponadczasowy styl. Prawdziwa spolecznosc.",
-        heroText: "Elegancki landing page skupiony na wideo posrodku, z bezposrednim dostepem do Discorda i czystym widokiem kategorii po lewej stronie.",
-        discordButton: "Dolacz do Discord",
-        openCategories: "Otworz kategorie",
-        backHome: "Powrot do strony glownej",
-        rulesKicker: "01 / Zasady",
-        rulesTitle: "Zasady serwera",
-        rulesText: "Autentycznosc jest obowiazkowa. Zadnych replik, falszywych ofert ani ukrytych wad. Ogloszenia musza byc uczciwe, przejrzyste i klarowne. Szacunek wobec wszystkich czlonkow jest konieczny.",
-        rulesBox1Title: "Bez podrobek",
-        rulesBox1Text: "Tylko oryginalne przedmioty. Naruszenia skutkuja natychmiastowym usunieciem.",
-        rulesBox2Title: "Pelna przejrzystosc",
-        rulesBox2Text: "Zawsze jasno pokazuj stan, wady i slady uzytkowania.",
-        rulesBox3Title: "Szacunek",
-        rulesBox3Text: "Bez dram, spamu i toksycznego zachowania.",
-        supportKicker: "02 / Wsparcie",
-        supportTitle: "Wsparcie i tickety",
-        supportText: "Jesli potrzebujesz pomocy lub masz problem, po prostu otworz ticket na Discordzie. Dzieki temu wszystko pozostaje uporzadkowane i szybkie. Jesli masz pytania o trade, ogloszenia lub spolecznosc, to wlasciwe miejsce.",
-        supportBox1Title: "Discord",
-        supportBox1Text: "Przejdz do serwera Discord",
-        supportBox2Title: "Czas odpowiedzi",
-        supportBox2Text: "Tickety sa priorytetyzowane i obslugiwane poprawnie.",
-        businessKicker: "03 / Business",
-        businessTitle: "Business",
-        businessText: "Zapytania biznesowe, partnerstwa i profesjonalne wspolprace odbywaja sie przez bezposredni i uporzadkowany kanal, aby komunikacja byla jasna i skuteczna.",
-        businessBox1Title: "Dla marek i sprzedawcow",
-        businessBox1Text: "Powazna wspolpraca z wyrazna korzyscia dla obu stron.",
-        businessBox2Title: "Kontakt",
-        businessBox2Text: "Najlepiej najpierw skontaktowac sie przez Discord i krotko opisac sprawe.",
-        vipKicker: "04 / VIP",
-        vipTitle: "Dostep VIP",
-        vipText: "VIP odblokowuje sie przez boostowanie serwera lub szczegolna aktywnosc w spolecznosci. Czlonkowie otrzymuja wieksza widocznosc, ekskluzywne korzysci i priorytetowa obecnosc.",
-        vipBox1Title: "Wiekszy zasieg",
-        vipBox1Text: "Twoje oferty i ogloszenia zyskuja wieksza widocznosc.",
-        vipBox2Title: "Ekskluzywne korzysci",
-        vipBox2Text: "Dostep do specjalnych sekcji i wybranych ofert.",
-        cooperationKicker: "05 / Wspolpraca",
-        cooperationTitle: "Wspolpraca",
-        cooperationText: "Do wspolpracy potrzebujemy od razu kluczowych informacji: link, statystyki, koncept i konkretna propozycje. To pozwala szybciej ocenic, czy to pasuje.",
-        cooperationBox1Title: "Wymagane",
-        cooperationBox1Text: "Link, statystyki, koncept, propozycja.",
-        cooperationBox2Title: "Cel",
-        cooperationBox2Text: "Wspolprace z wyrazna jakoscia i pasujaca estetyka.",
-        teamKicker: "06 / Team Up",
-        teamTitle: "Team Up",
-        teamText: "Tutaj czlonkowie lacza sie w sprawie projektow, trade'ow, contentu lub nowych pomyslow. Jesli szukasz osob o podobnym guscie lub celach, jestes we wlasciwym miejscu.",
-        teamBox1Title: "Networking",
-        teamBox1Text: "Znajdz wlasciwe kontakty do kreatywnych lub komercyjnych projektow.",
-        teamBox2Title: "Spolecznosc",
-        teamBox2Text: "To nie tylko market, ale prawdziwa wspolpraca."
     }
 };
 
 const discordUrl = "https://discord.gg/FCz4RP28";
 
-const sidebar = document.getElementById('sidebar');
-const home = document.getElementById('home');
-const contentStage = document.getElementById('contentStage');
-const overlay = document.getElementById('overlay');
-const navButtons = [...document.querySelectorAll('.nav button')];
-const panels = [...document.querySelectorAll('.panel')];
-const languageSwitcher = document.getElementById('languageSwitcher');
-const menuToggle = document.getElementById('menuToggle');
+const intro = document.getElementById("intro");
+const siteContent = document.getElementById("siteContent");
+const shell = document.getElementById("appShell");
+const sidebar = document.getElementById("sidebar");
+const home = document.getElementById("home");
+const contentStage = document.getElementById("contentStage");
+const overlay = document.getElementById("overlay");
+const navButtons = [...document.querySelectorAll(".nav button")];
+const panels = [...document.querySelectorAll(".panel")];
+const languageSwitcher = document.getElementById("languageSwitcher");
+const menuToggle = document.getElementById("menuToggle");
+const logoCard = document.getElementById("logoCard");
+const animatedItems = [...document.querySelectorAll("[data-animate]")];
+const parallaxItems = [...document.querySelectorAll("[data-parallax]")];
 
 let currentPage = null;
 let sidebarOpen = false;
+let isMobileViewport = window.matchMedia("(max-width: 860px)").matches;
 
-window.addEventListener('mousemove', e => {
-    document.body.style.setProperty('--x', e.clientX + 'px');
-    document.body.style.setProperty('--y', e.clientY + 'px');
-});
+function startIntroSequence() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        siteContent.classList.add("reveal");
+        if (intro) intro.style.display = "none";
+        return;
+    }
+
+    siteContent.classList.add("reveal");
+
+    setTimeout(() => {
+        intro.classList.add("hide");
+    }, 1650);
+
+    setTimeout(() => {
+        intro.style.display = "none";
+    }, 2450);
+}
 
 function updateDiscordLinks() {
     document.querySelectorAll('a[href*="discord.gg"]').forEach(link => {
@@ -1516,141 +1590,220 @@ function updateDiscordLinks() {
     });
 }
 
-function openSidebar() {
-    sidebarOpen = true;
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
+function setSidebarState(open) {
+    sidebarOpen = open;
+    sidebar.classList.toggle("open", open && isMobileViewport);
+    sidebar.classList.toggle("collapsed", !open && !isMobileViewport);
+    overlay.classList.toggle("show", open && isMobileViewport);
+    sidebar.setAttribute("aria-hidden", String(!open));
+    shell.classList.toggle("sidebar-collapsed", !open || isMobileViewport);
+    menuToggle.classList.toggle("compact", !open || isMobileViewport);
+}
+
+function openSidebar(forceFocus = false) {
+    setSidebarState(true);
+    if (forceFocus && isMobileViewport) {
+        sidebar.scrollTo({ top: 0, behavior: "smooth" });
+    }
 }
 
 function closeSidebar() {
-    sidebarOpen = false;
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
+    setSidebarState(false);
 }
 
 function toggleSidebar() {
-    if (sidebarOpen) {
-        closeSidebar();
-    } else {
-        openSidebar();
-    }
+    sidebarOpen ? closeSidebar() : openSidebar(true);
 }
 
-function openSidebarAndFirst() {
-    openSidebar();
-    home.classList.add('inner-hidden');
-    contentStage.classList.add('active');
-
-    if (!currentPage) {
-        openPage('rules', true);
+function handleOverlay() {
+    if (currentPage) {
+        closeSidebar();
+        return;
     }
+    goHome();
 }
 
 function setActiveButton(id) {
     navButtons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.page === id);
+        btn.classList.toggle("active", btn.dataset.page === id);
     });
 }
 
-function openPage(id, instant = false) {
+function resetLeavingPanels() {
+    panels.forEach(panel => panel.classList.remove("leaving"));
+}
+
+function revealPanel(id) {
     const nextPanel = document.getElementById(id);
     if (!nextPanel) return;
 
-    home.classList.add('inner-hidden');
-    contentStage.classList.add('active');
-    setActiveButton(id);
-
-    if (currentPage === id) {
-        closeSidebar();
-        return;
-    }
-
     const currentPanel = currentPage ? document.getElementById(currentPage) : null;
-    const currentIndex = panels.findIndex(panel => panel.id === currentPage);
-    const nextIndex = panels.findIndex(panel => panel.id === id);
+
+    if (currentPanel && currentPanel !== nextPanel) {
+        currentPanel.classList.remove("active");
+        currentPanel.classList.add("leaving");
+    }
 
     panels.forEach(panel => {
-        if (panel.id !== id && panel !== currentPanel) {
-            panel.classList.remove('active', 'leaving-left', 'leaving-right');
+        if (panel !== currentPanel && panel !== nextPanel) {
+            panel.classList.remove("active", "leaving");
         }
     });
-
-    if (currentPanel) {
-        currentPanel.classList.remove('active');
-        currentPanel.classList.add(nextIndex > currentIndex ? 'leaving-left' : 'leaving-right');
-    }
 
     requestAnimationFrame(() => {
-        nextPanel.classList.remove('leaving-left', 'leaving-right');
-        if (instant) {
-            nextPanel.style.transition = 'none';
-            nextPanel.classList.add('active');
-            void nextPanel.offsetHeight;
-            nextPanel.style.transition = '';
-        } else {
-            nextPanel.classList.add('active');
-        }
+        nextPanel.classList.remove("leaving");
+        nextPanel.classList.add("active");
     });
 
-    currentPage = id;
+    setTimeout(resetLeavingPanels, 520);
+}
 
-    // Wichtig: Nach Klick auf Kategorie Menü schließen,
-    // damit der Inhalt komplett sichtbar ist.
+function openPage(id) {
+    const nextPanel = document.getElementById(id);
+    if (!nextPanel) return;
+
+    home.classList.add("inner-hidden");
+    contentStage.classList.add("active");
+    setActiveButton(id);
+    revealPanel(id);
+    currentPage = id;
     closeSidebar();
+    nextPanel.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function goHome() {
-    closeSidebar();
-    home.classList.remove('inner-hidden');
-    contentStage.classList.remove('active');
-
-    navButtons.forEach(btn => btn.classList.remove('active'));
-    panels.forEach(panel => {
-        panel.classList.remove('active', 'leaving-left', 'leaving-right');
-    });
-
+    home.classList.remove("inner-hidden");
+    contentStage.classList.remove("active");
+    navButtons.forEach(btn => btn.classList.remove("active"));
+    panels.forEach(panel => panel.classList.remove("active", "leaving"));
     currentPage = null;
+    closeSidebar();
 }
 
 function switchLanguage(lang) {
     const dict = translations[lang] || translations.de;
-    document.documentElement.lang = lang;
-    document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
     });
 
+    menuToggle.setAttribute("aria-label", dict.menuButton || "Kategorien");
     updateDiscordLinks();
 }
 
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') goHome();
+function updateViewportMode() {
+    isMobileViewport = window.matchMedia("(max-width: 860px)").matches;
+
+    if (isMobileViewport) {
+        sidebar.classList.remove("collapsed");
+        setSidebarState(false);
+    } else {
+        sidebar.classList.remove("open");
+        setSidebarState(Boolean(currentPage) ? false : true);
+    }
+}
+
+function animateInView() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+            }
+        });
+    }, { threshold: 0.16 });
+
+    animatedItems.forEach(item => observer.observe(item));
+}
+
+function handleParallax() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    parallaxItems.forEach(item => {
+        const speed = parseFloat(item.dataset.speed || "0.08");
+        item.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
+    });
+}
+
+function updateBackgroundPointer(clientX, clientY) {
+    const x = `${(clientX / window.innerWidth) * 100}%`;
+    const y = `${(clientY / window.innerHeight) * 100}%`;
+    document.documentElement.style.setProperty("--mouse-x", x);
+    document.documentElement.style.setProperty("--mouse-y", y);
+}
+
+function setLogoTilt(normalizedX, normalizedY) {
+    document.documentElement.style.setProperty("--logo-rotate-x", `${-normalizedY * 8}deg`);
+    document.documentElement.style.setProperty("--logo-rotate-y", `${normalizedX * 10}deg`);
+    document.documentElement.style.setProperty("--logo-scale", "1.02");
+}
+
+function resetLogoTilt() {
+    document.documentElement.style.setProperty("--logo-rotate-x", "0deg");
+    document.documentElement.style.setProperty("--logo-rotate-y", "0deg");
+    document.documentElement.style.setProperty("--logo-scale", "1");
+}
+
+function bindLogoInteraction() {
+    if (!logoCard) return;
+
+    logoCard.addEventListener("mousemove", (event) => {
+        const rect = logoCard.getBoundingClientRect();
+        const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+        const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+        setLogoTilt(normalizedX, normalizedY);
+        updateBackgroundPointer(event.clientX, event.clientY);
+    });
+
+    logoCard.addEventListener("mouseleave", resetLogoTilt);
+
+    logoCard.addEventListener("touchstart", (event) => {
+        const touch = event.touches[0];
+        const rect = logoCard.getBoundingClientRect();
+        const normalizedX = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
+        const normalizedY = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
+        setLogoTilt(normalizedX, normalizedY);
+    }, { passive: true });
+
+    logoCard.addEventListener("touchmove", (event) => {
+        const touch = event.touches[0];
+        const rect = logoCard.getBoundingClientRect();
+        const normalizedX = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
+        const normalizedY = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
+        setLogoTilt(normalizedX, normalizedY);
+        updateBackgroundPointer(touch.clientX, touch.clientY);
+    }, { passive: true });
+
+    logoCard.addEventListener("touchend", resetLogoTilt, { passive: true });
+}
+
+document.addEventListener("mousemove", event => {
+    updateBackgroundPointer(event.clientX, event.clientY);
 });
 
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].clientX;
-}, { passive: true });
-
-document.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].clientX;
-
-    if (touchStartX < 40 && touchEndX - touchStartX > 70 && !sidebarOpen && !currentPage) {
-        openSidebar();
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        if (sidebarOpen && isMobileViewport) {
+            closeSidebar();
+            return;
+        }
+        goHome();
     }
+});
 
-    if (sidebarOpen && touchStartX - touchEndX > 90) {
-        closeSidebar();
-    }
-}, { passive: true });
+window.addEventListener("resize", updateViewportMode);
+window.addEventListener("orientationchange", updateViewportMode);
+window.addEventListener("scroll", handleParallax, { passive: true });
 
-switchLanguage('de');
-languageSwitcher.value = 'de';
+startIntroSequence();
+animateInView();
+bindLogoInteraction();
+switchLanguage("de");
+languageSwitcher.value = "de";
 updateDiscordLinks();
+updateViewportMode();
+handleParallax();
 </script>
 
 </body>
